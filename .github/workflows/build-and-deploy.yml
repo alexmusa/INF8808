@@ -12,13 +12,13 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@master
       - name: Install Dependencies
-        run: find . -maxdepth 1 -type d \( ! -name . \) -exec bash -c 'cd "$0" && npm install' {} \; 
+        run: find . -mindepth 1 -maxdepth 1 -type d -name TP* -exec bash -c 'cd "$0" && npm install' {} \; 
       - name: Build
-        run: find . -maxdepth 1 -type d \( ! -name . \) -exec bash -c 'cd "$0" && npm run build' {} \; 
+        run: find . -mindepth 1 -maxdepth 1 -type d -name TP* -exec bash -c 'cd "$0" && npm run build' {} \; 
       - name: Move
         run:
-          mkdir dist
-          find . -mindepth 1 -maxdepth 2 -type d -name TP* -exec bash -c 'mv "$0" dist/' {} \;
+          find . -mindepth 1 -maxdepth 1 -type d -name TP* -exec bash -c 'mkdir -p dist/$(basename "$0")' {} \;
+          find . -mindepth 1 -maxdepth 1 -type d -name TP* -exec bash -c 'mv "$0"/dist/* dist/$(basename "$0")' {} \;
       - name: Archive Production Artifact
         uses: actions/upload-artifact@master
         with:
