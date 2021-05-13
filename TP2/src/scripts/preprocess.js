@@ -8,8 +8,12 @@
  * @returns {object[]} The dataset with properly capitalized names
  */
 export function cleanNames (data) {
-  // TODO: Clean the player name data
-  return []
+  // DONE: Clean the player name data
+  data.forEach(line => {
+    line.Player = line.Player.toLowerCase()
+    line.Player = line.Player[0].toUpperCase() + line.Player.substr(1)
+  })
+  return data
 }
 
 /**
