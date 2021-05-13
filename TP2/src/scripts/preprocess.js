@@ -118,6 +118,5 @@ export function replaceOthers (data, top) {
 
     act.Players = topPlayers
   })
-  console.log(data)
   return data
 }
