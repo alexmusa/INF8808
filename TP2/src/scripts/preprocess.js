@@ -23,8 +23,27 @@ export function cleanNames (data) {
  * @returns {string[]} The names of the top 5 players with most lines
  */
 export function getTopPlayers (data) {
-  // TODO: Find the five top players with the most lines in the play
-  return []
+  // DONE: Find the five top players with the most lines in the play
+  const N = 5
+
+  // Find occurences for all players
+  let occ = data.reduce((occurences, line) => {
+    const occurence = occurences.get(line.Player)
+    occurences.set(line.Player, occurence? occurence + 1: 1)
+    return occurences
+  }, new Map())
+
+  // Transform the corresponding map entries to an array
+  occ = [...occ.entries()]
+
+  // Sort players by occurence
+  occ.sort((entryA, entryB) => entryB[1] - entryA[1])
+
+  // Get top N players
+  const topN = []
+  occ.slice(0,N).forEach(entry => topN.push(entry[0]))
+
+  return topN
 }
 
 /**
