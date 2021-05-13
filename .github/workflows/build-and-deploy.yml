@@ -21,9 +21,9 @@ jobs:
           pushd TP2; npm run build; popd
       - name: Copy
         run: |
-          mkdir -p dist/TP1
+          mkdir -p public/TP1
           cp TP1/dist/* public/TP1/
-          mkdir -p dist/TP2
+          mkdir -p public/TP2
           cp TP2/dist/* public/TP2/
       - name: Archive Production Artifact
         uses: actions/upload-artifact@master
