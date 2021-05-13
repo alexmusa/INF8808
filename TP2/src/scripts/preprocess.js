@@ -70,8 +70,30 @@ export function getTopPlayers (data) {
  * @returns {object[]} The nested data set grouping the line count by player and by act
  */
 export function summarizeLines (data) {
-  // TODO : Generate the data structure as defined above
-  return []
+  // DONE : Generate the data structure as defined above
+  const summary = []
+
+  data.forEach(line => {
+    let act = summary.find(actObj => actObj.Act === line.Act)
+
+    // Add the act if it is new
+    if (!act) {
+      act = {Act: line.Act, Players: []}
+      summary.push(act)
+    }
+
+    const player = act.Players.find(playerObj => playerObj.Player === line.Player)
+    if (!player) { // Add the player if it is new
+      act.Players.push({
+        Player: line.Player,
+        Count: 1
+      })
+    } else { // Update the player count
+      player.Count++
+    }
+  })
+
+  return summary
 }
 
 /**
