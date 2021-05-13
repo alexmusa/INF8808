@@ -106,8 +106,18 @@ export function summarizeLines (data) {
  * @returns {object[]} The dataset with players not in the top 5 summarized as 'Other'
  */
 export function replaceOthers (data, top) {
-  // TODO : For each act, sum the lines uttered by players not in the top 5 for the play
+  // DONE : For each act, sum the lines uttered by players not in the top 5 for the play
   // and replace these players in the data structure by a player with name 'Other' and
   // a line count corresponding to the sum of lines
-  return []
+  data.forEach(act => {
+    const topPlayers = act.Players.filter(playerObj => top.includes(playerObj.Player))
+    const others = act.Players.filter(playerObj => !top.includes(playerObj.Player))
+
+    const othersCount = others.reduce((acc, playerObj) => acc + playerObj.Count, 0)
+    topPlayers.push({Player: 'Other', Count: othersCount})
+
+    act.Players = topPlayers
+  })
+  console.log(data)
+  return data
 }
