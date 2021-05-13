@@ -12,15 +12,15 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@master
       - name: Install Dependencies
-        run: 
+        run: |
           pushd TP1; npm install; popd
           pushd TP2; npm install; popd
       - name: Build
-        run:
+        run: |
           pushd TP1; npm run build; popd
           pushd TP2; npm run build; popd
       - name: Copy
-        run:
+        run: |
           mkdir -p dist/TP1
           cp TP1/dist/* public/TP1/
           mkdir -p dist/TP2
