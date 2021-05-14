@@ -41,7 +41,7 @@ export function getTopPlayers (data) {
 
   // Get top N players
   const topN = []
-  occ.slice(0,N).forEach(entry => topN.push(entry[0]))
+  occ.slice(0, N).forEach(entry => topN.push(entry[0]))
 
   return topN
 }
