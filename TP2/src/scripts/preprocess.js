@@ -29,7 +29,7 @@ export function getTopPlayers (data) {
   // Find occurences for all players
   let occ = data.reduce((occurences, line) => {
     const occurence = occurences.get(line.Player)
-    occurences.set(line.Player, occurence? occurence + 1: 1)
+    occurences.set(line.Player, occurence ? occurence + 1 : 1)
     return occurences
   }, new Map())
 
@@ -78,7 +78,7 @@ export function summarizeLines (data) {
 
     // Add the act if it is new
     if (!act) {
-      act = {Act: line.Act, Players: []}
+      act = { Act: line.Act, Players: [] }
       summary.push(act)
     }
 
@@ -114,7 +114,7 @@ export function replaceOthers (data, top) {
     const others = act.Players.filter(playerObj => !top.includes(playerObj.Player))
 
     const othersCount = others.reduce((acc, playerObj) => acc + playerObj.Count, 0)
-    topPlayers.push({Player: 'Other', Count: othersCount})
+    topPlayers.push({ Player: 'Other', Count: othersCount })
 
     act.Players = topPlayers
   })
