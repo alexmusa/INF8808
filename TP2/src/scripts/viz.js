@@ -61,7 +61,7 @@ export function drawBars (y, xSubgroup, players, height, color, tip) {
   d3.select('#graph-g')
     .selectAll('.group')
     .selectAll('rect').data(act => act.Players).join('rect')
-    .attr('width', player => xSubgroup(players[1]) - xSubgroup(players[0]))
+    .attr('width', xSubgroup(players[1]) - xSubgroup(players[0]))
     .attr('height', player => height - y(player.Count))
     .attr('x', player => xSubgroup(player.Player))
     .attr('y', player => y(player.Count))
