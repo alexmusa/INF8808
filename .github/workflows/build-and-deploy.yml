@@ -15,6 +15,10 @@ jobs:
         run: |
           pushd TP1; npm install; popd
           pushd TP2; npm install; popd
+      - name: Install Dependencies
+        run: |
+          sed -i 's/parcel build .\/src\/index\.html/parcel build .\/src\/index\.html --public-url \/TP1\//g' TP1/package.json
+          sed -i 's/parcel build .\/src\/index\.html/parcel build .\/src\/index\.html --public-url \/TP1\//g' TP2/package.json
       - name: Build
         run: |
           pushd TP1; npm run build; popd
