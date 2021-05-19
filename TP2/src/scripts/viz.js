@@ -57,13 +57,21 @@ export function createGroups (data, x) {
  * @param {*} tip The tooltip to show when each bar is hovered and hide when it's not
  */
 export function drawBars (y, xSubgroup, players, height, color, tip) {
+  function mapData (data) {
+    return data.Players.map(p => {
+      return { act: data.Act, player: p.Player, count: p.Count }
+    })
+  }
+
   // DONE : Draw the bars
   d3.select('#graph-g')
     .selectAll('.group')
-    .selectAll('rect').data(act => act.Players).join('rect')
+    .selectAll('rect').data(data => mapData(data)).join('rect')
     .attr('width', xSubgroup(players[1]) - xSubgroup(players[0]))
-    .attr('height', player => height - y(player.Count))
-    .attr('x', player => xSubgroup(player.Player))
-    .attr('y', player => y(player.Count))
-    .style('fill', player => color(player.Player))
+    .attr('height', d => height - y(d.count))
+    .attr('x', d => xSubgroup(d.player))
+    .attr('y', d => y(d.count))
+    .style('fill', d => color(d.player))
+    .on('mouseover', tip.show)
+    .on('mouseout', tip.hide)
 }
