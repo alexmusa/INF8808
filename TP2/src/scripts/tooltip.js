@@ -17,21 +17,23 @@ export function getContents (d) {
   */
   const element = d3.create()
 
-  // TODO: CSS and HTML gurus, is it the proper way to lay this out?
-  const line1 = element.append('div').style('margin-bottom', '1em')
-  line1.append('label')
+  // Title
+  element.append('div').style('margin-bottom', '1em')
+    .append('label')
     .attr('id', 'tooltip-title')
-    .text('Act' + d.act)
+    .text('Act ' + d.act)
 
-  const line2 = element.append('div')
-  line2.append('b').text('Player : ')
-  line2.append('text')
+  // Player name
+  element.append('div')
+    .append('b').text('Player : ')
+    .append('text')
     .attr('class', 'tooltip-value')
     .text(d.player)
 
-  const line3 = element.append('div')
-  line3.append('b').text('Count : ')
-  line3.append('text')
+  // Player's line count
+  element.append('div')
+    .append('b').text('Count : ')
+    .append('text')
     .attr('class', 'tooltip-value')
     .text(d.count)
 

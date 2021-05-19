@@ -13,7 +13,7 @@ export function draw (data, color) {
       .attr('width', 15)
       .attr('height', 16)
       .append('rect')
-      .attr('y', 1) // TODO: Is there a better way to line up text and rectangles?
+      .attr('y', 1)
       .attr('width', 15)
       .attr('height', 15)
       .style('fill', color(player))
@@ -28,6 +28,6 @@ export function draw (data, color) {
 
     drawRectangle(element, player)
     element.append('text').text(player)
-      .style('padding-left', '2px') // TODO: Is there a better way to line up text and rectangles?
+      .style('padding-left', '2px')
   })
 }
