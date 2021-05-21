@@ -23,9 +23,9 @@ export function getNeighborhoodNames (data) {
  */
 export function filterYears (data, start, end) {
   // DONE : Filter the data by years
-  return data.filter(line => { 
+  return data.filter(line => {
     const year = line.Date_Plantation.getFullYear()
-    return start <= year && year <= end 
+    return start <= year && year <= end
   })
 }
 
@@ -69,10 +69,10 @@ export function summarizeYearlyCounts (data) {
  */
 export function fillMissingData (data, neighborhoods, start, end, range) {
   // DONE : Find missing data and fill with 0
-  const emptyObjects = new Array()
+  const emptyObjects = []
   neighborhoods.forEach(neighborhood => {
     range(start, end).forEach(year => {
-      if (!data.find(d => d.Arrond_Nom == neighborhood && d.Plantation_Year == year)) {
+      if (!data.find(d => d.Arrond_Nom === neighborhood && d.Plantation_Year === year)) {
         emptyObjects.push({ Arrond_Nom: neighborhood, Plantation_Year: year, Counts: 0 })
       }
     })
