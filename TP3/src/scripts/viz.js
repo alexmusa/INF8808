@@ -6,7 +6,13 @@
  * @param {object[]} data The data to be displayed
  */
 export function setColorScaleDomain (colorScale, data) {
-  // TODO : Set domain of color scale
+  // DONE : Set domain of color scale
+  const counts = [...data.reduce((acc, curr) => {
+    acc.add(curr.Counts)
+    return acc
+  }, new Set())]
+
+  colorScale.domain([Math.min.apply(Math, counts), Math.max.apply(Math, counts)])
 }
 
 /**
@@ -15,7 +21,14 @@ export function setColorScaleDomain (colorScale, data) {
  * @param {object[]} data The data to use for binding
  */
 export function appendRects (data) {
-  // TODO : Append SVG rect elements
+  // DONE : Append SVG rect elements
+  d3.select('#graph-g')
+    .selectAll()
+    .data(data)
+    .enter()
+    .append('g')
+    .append('rect')
+    .attr('class', 'heatmap-rect')
 }
 
 /**
@@ -27,7 +40,13 @@ export function appendRects (data) {
  * @param {Function} range A utilitary funtion that could be useful to generate a list of numbers in a range
  */
 export function updateXScale (xScale, data, width, range) {
-  // TODO : Update X scale
+  // DONE : Update X scale
+  const years = data.reduce((acc, curr) => {
+    acc.add(curr.Plantation_Year)
+    return acc
+  }, new Set())
+
+  xScale.domain([...years].sort().reverse()).range([width, 0])
 }
 
 /**
@@ -38,8 +57,9 @@ export function updateXScale (xScale, data, width, range) {
  * @param {number} height The height of the diagram
  */
 export function updateYScale (yScale, neighborhoodNames, height) {
-  // TODO : Update Y scale
+  // DONE : Update Y scale
   // Make sure to sort the neighborhood names alphabetically
+  yScale.domain(neighborhoodNames.sort()).range([0, height])
 }
 
 /**
@@ -48,7 +68,10 @@ export function updateYScale (yScale, neighborhoodNames, height) {
  *  @param {*} xScale The scale to use to draw the axis
  */
 export function drawXAxis (xScale) {
-  // TODO : Draw X axis
+  // DONE : Draw X axis
+  d3.select('.x')
+    .style('font-size', 10)
+    .call(d3.axisTop(xScale))
 }
 
 /**
@@ -58,14 +81,20 @@ export function drawXAxis (xScale) {
  * @param {number} width The width of the graphic
  */
 export function drawYAxis (yScale, width) {
-  // TODO : Draw Y axis
+  // DONE : Draw Y axis
+  d3.select('.y')
+    .style('font-size', 10)
+    .attr('transform', 'translate(' + width + ',0)')
+    .call(d3.axisRight(yScale).tickSize(0))
 }
 
 /**
  * Rotates the ticks on the X axis 45 degrees towards the left.
  */
 export function rotateXTicks () {
-  // TODO : Rotate X axis' ticks
+  // DONE : Rotate X axis' ticks
+  d3.select('.x').selectAll('text')
+    .attr('transform', 'rotate(-45)')
 }
 
 /**
@@ -77,5 +106,12 @@ export function rotateXTicks () {
  * @param {*} colorScale The color scale used to set the rectangles' colors
  */
 export function updateRects (xScale, yScale, colorScale) {
-  // TODO : Set position, size and fill of rectangles according to bound data
+  // DONE : Set position, size and fill of rectangles according to bound data
+  d3.select('#graph-g')
+    .selectAll('.heatmap-rect')
+    .attr('x', (d) => xScale(d.Plantation_Year))
+    .attr('y', (d) => yScale(d.Arrond_Nom))
+    .attr('width', xScale.bandwidth())
+    .attr('height', yScale.bandwidth())
+    .style('fill', (d) => colorScale(d.Counts))
 }
