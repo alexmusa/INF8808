@@ -10,7 +10,7 @@ export function getNeighborhoodNames (data) {
   data.forEach(line => {
     neighborhoods.add(line.Arrond_Nom)
   })
-  return neighborhoods
+  return [...neighborhoods]
 }
 
 /**
