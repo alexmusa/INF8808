@@ -19,10 +19,10 @@ jobs:
           pushd TP4; npm install; popd
       - name: Set Base URL
         run: |
-          sed -i 's/parcel build .\/src\/index\.html/parcel build .\/src\/index\.html --public-url \/TP1\//g' TP1/package.json
-          sed -i 's/parcel build .\/src\/index\.html/parcel build .\/src\/index\.html --public-url \/TP2\//g' TP2/package.json
-          sed -i 's/parcel build .\/src\/index\.html/parcel build .\/src\/index\.html --public-url \/TP3\//g' TP3/package.json
-          sed -i 's/parcel build .\/src\/index\.html/parcel build .\/src\/index\.html --public-url \/TP4\//g' TP4/package.json
+          sed -i 's/parcel build .\/src\/index\.html/parcel build .\/src\/index\.html --no-optimize --public-url \/TP1\//g' TP1/package.json
+          sed -i 's/parcel build .\/src\/index\.html/parcel build .\/src\/index\.html --no-optimize --public-url \/TP2\//g' TP2/package.json
+          sed -i 's/parcel build .\/src\/index\.html/parcel build .\/src\/index\.html --no-optimize --public-url \/TP3\//g' TP3/package.json
+          sed -i 's/parcel build .\/src\/index\.html/parcel build .\/src\/index\.html --no-optimize --public-url \/TP4\//g' TP4/package.json
       - name: Build
         run: |
           pushd TP1; npm run build; popd
