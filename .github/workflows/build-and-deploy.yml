@@ -16,16 +16,19 @@ jobs:
           pushd TP1; npm install; popd
           pushd TP2; npm install; popd
           pushd TP3; npm install; popd
+          pushd TP4; npm install; popd
       - name: Set Base URL
         run: |
           sed -i 's/parcel build .\/src\/index\.html/parcel build .\/src\/index\.html --public-url \/TP1\//g' TP1/package.json
           sed -i 's/parcel build .\/src\/index\.html/parcel build .\/src\/index\.html --public-url \/TP2\//g' TP2/package.json
-          sed -i 's/parcel build .\/src\/index\.html/parcel build .\/src\/index\.html --public-url \/TP2\//g' TP3/package.json
+          sed -i 's/parcel build .\/src\/index\.html/parcel build .\/src\/index\.html --public-url \/TP3\//g' TP3/package.json
+          sed -i 's/parcel build .\/src\/index\.html/parcel build .\/src\/index\.html --public-url \/TP4\//g' TP4/package.json
       - name: Build
         run: |
           pushd TP1; npm run build; popd
           pushd TP2; npm run build; popd
           pushd TP3; npm run build; popd
+          pushd TP4; npm run build; popd
       - name: Copy
         run: |
           mkdir -p public/TP1
@@ -34,6 +37,8 @@ jobs:
           cp TP2/dist/* public/TP2/
           mkdir -p public/TP3
           cp TP3/dist/* public/TP3/
+          mkdir -p public/TP4
+          cp TP3/dist/* public/TP4/
       - name: Archive Production Artifact
         uses: actions/upload-artifact@master
         with:
