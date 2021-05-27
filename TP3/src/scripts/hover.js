@@ -13,7 +13,16 @@
  * @param {Function} unselectTicks The function to call to remove "selected" mode from the ticks
  */
 export function setRectHandler (xScale, yScale, rectSelected, rectUnselected, selectTicks, unselectTicks) {
-  // TODO : Select the squares and set their event handlers
+  // DONE : Select the squares and set their event handlers
+  d3.selectAll('.heatmap-rect')
+    .on('mouseover', function (d) {
+      rectSelected(d3.select(this), xScale, yScale)
+      selectTicks(d.Arrond_Nom, d.Plantation_Year)
+    })
+    .on('mouseout', function (d) {
+      rectUnselected(d3.select(this))
+      unselectTicks()
+    })
 }
 
 /**
@@ -28,9 +37,22 @@ export function setRectHandler (xScale, yScale, rectSelected, rectUnselected, se
  * @param {*} yScale The yScale to be used when placing the text in the square
  */
 export function rectSelected (element, xScale, yScale) {
-  // TODO : Display the number of trees on the selected element
+  // DONE : Display the number of trees on the selected element
   // Make sure the nimber is centered. If there are 1000 or more
   // trees, display the text in white so it contrasts with the background.
+  element.style('opacity', '75%')
+
+  const g = element.select(function () {
+    return this.parentNode
+  })
+
+  g.append('text')
+    .attr('x', (d) => xScale(d.Plantation_Year) + xScale.bandwidth() / 2)
+    .attr('y', (d) => yScale(d.Arrond_Nom) + yScale.bandwidth() / 2)
+    .attr('dominant-baseline', 'middle')
+    .attr('text-anchor', 'middle')
+    .attr('fill', (d) => d.Counts > 1000 ? 'white' : 'black')
+    .text((d) => d.Counts)
 }
 
 /**
@@ -43,7 +65,14 @@ export function rectSelected (element, xScale, yScale) {
  * @param {*} element The selection of rectangles in "selected" state
  */
 export function rectUnselected (element) {
-  // TODO : Unselect the element
+  // DONE : Unselect the element
+  element.style('opacity', '100%')
+
+  const g = element.select(function () {
+    return this.parentNode
+  })
+
+  g.select('text').remove()
 }
 
 /**
@@ -53,12 +82,28 @@ export function rectUnselected (element) {
  * @param {number} year The year associated with the tick text to make bold
  */
 export function selectTicks (name, year) {
-  // TODO : Make the ticks bold
+  // DONE : Make the ticks bold
+  d3.select('.x.axis')
+    .selectAll('.tick')
+    .filter((v) => v === year)
+    .style('font-weight', 'bold')
+
+  d3.select('.y.axis')
+    .selectAll('.tick')
+    .filter((v) => v === name)
+    .style('font-weight', 'bold')
 }
 
 /**
  * Returns the font weight of all ticks to normal.
  */
 export function unselectTicks () {
-  // TODO : Unselect the ticks
+  // DONE : Unselect the ticks
+  d3.select('.x.axis')
+    .selectAll('.tick')
+    .style('font-weight', 'normal')
+
+  d3.select('.y.axis')
+    .selectAll('.tick')
+    .style('font-weight', 'normal')
 }

@@ -54,5 +54,20 @@ export function initLegendAxis () {
  * @param {*} colorScale The color scale represented by the legend
  */
 export function draw (x, y, height, width, fill, colorScale) {
-  // TODO : Draw the legend
+  // DONE : Draw the legend
+  d3.select('rect.legend.bar')
+    .attr('height', height)
+    .attr('width', width)
+    .attr('x', x)
+    .attr('y', y)
+    .attr('fill', fill)
+
+  const scale = d3.scaleLinear()
+    .domain(colorScale.domain())
+    .range([height, 0])
+  const axis = d3.axisLeft(scale).ticks(7)
+
+  d3.select('g.legend.axis')
+    .attr('transform', `translate(${x},${y})`)
+    .call(axis)
 }
