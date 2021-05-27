@@ -15,12 +15,13 @@
 export function setRectHandler (xScale, yScale, rectSelected, rectUnselected, selectTicks, unselectTicks) {
   // DONE : Select the squares and set their event handlers
   d3.selectAll('.heatmap-rect')
-    .on('mouseover', function (d) {
-      rectSelected(d3.select(this), xScale, yScale)
+    .select(function () { return this.parentNode })
+    .on('mouseenter', function (d) {
+      rectSelected(d3.select(this).select('rect'), xScale, yScale)
       selectTicks(d.Arrond_Nom, d.Plantation_Year)
     })
-    .on('mouseout', function (d) {
-      rectUnselected(d3.select(this))
+    .on('mouseleave', function () {
+      rectUnselected(d3.select(this).select('rect'))
       unselectTicks()
     })
 }
@@ -41,12 +42,8 @@ export function rectSelected (element, xScale, yScale) {
   // Make sure the nimber is centered. If there are 1000 or more
   // trees, display the text in white so it contrasts with the background.
   element.style('opacity', '75%')
-
-  const g = element.select(function () {
-    return this.parentNode
-  })
-
-  g.append('text')
+    .select(function () { return this.parentNode })
+    .append('text')
     .attr('x', (d) => xScale(d.Plantation_Year) + xScale.bandwidth() / 2)
     .attr('y', (d) => yScale(d.Arrond_Nom) + yScale.bandwidth() / 2)
     .attr('dominant-baseline', 'middle')
@@ -67,12 +64,8 @@ export function rectSelected (element, xScale, yScale) {
 export function rectUnselected (element) {
   // DONE : Unselect the element
   element.style('opacity', '100%')
-
-  const g = element.select(function () {
-    return this.parentNode
-  })
-
-  g.select('text').remove()
+    .select(function () { return this.parentNode })
+    .select('text').remove()
 }
 
 /**
