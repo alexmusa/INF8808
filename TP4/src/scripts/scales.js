@@ -8,9 +8,14 @@
  * @param {object} data The data to be displayed
  * @returns {*} The linear scale used to determine the radius
  */
-export function setRadiusScale (data) {
-  // TODO : Set scale
-  return {}
+ export function setRadiusScale (data) {
+  // DONE : Set scale
+  const it = [...data['2000'], ...data['2015']]
+  const accessor = country => country.Population
+
+  return d3.scaleLinear()
+    .domain([d3.min(it, accessor), d3.max(it, accessor)])
+    .range([5, 20])
 }
 
 /**
@@ -24,8 +29,17 @@ export function setRadiusScale (data) {
  * @returns {*} The ordinal scale used to determine the color
  */
 export function setColorScale (data) {
-  // TODO : Set scale
-  return {}
+  // DONE : Set scale
+  const it = [...data['2000'], ...data['2015']]
+  const continents = new Set()
+
+  it.forEach(country => {
+    continents.add(country.Continent)
+  })
+
+  return d3.scaleOrdinal()
+    .domain([...continents].sort())
+    .range(d3.schemeCategory10)
 }
 
 /**
@@ -36,8 +50,13 @@ export function setColorScale (data) {
  * @returns {*} The linear scale in X
  */
 export function setXScale (width, data) {
-  // TODO : Set scale
-  return {}
+  // DONE : Set scale
+  const it = [...data['2000'], ...data['2015']]
+  const accessor = country => country.GDP
+
+  return d3.scaleLog()
+    .domain([d3.min(it, accessor), d3.max(it, accessor)])
+    .range([0, width])
 }
 
 /**
@@ -48,6 +67,11 @@ export function setXScale (width, data) {
  * @returns {*} The linear scale in Y
  */
 export function setYScale (height, data) {
-  // TODO : Set scale
-  return {}
+  // DONE : Set scale
+  const it = [...data['2000'], ...data['2015']]
+  const accessor = country => country.CO2
+
+  return d3.scaleLog()
+    .domain([d3.min(it, accessor), d3.max(it, accessor)])
+    .range([height, 0])
 }
