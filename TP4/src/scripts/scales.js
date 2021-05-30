@@ -8,7 +8,7 @@
  * @param {object} data The data to be displayed
  * @returns {*} The linear scale used to determine the radius
  */
- export function setRadiusScale (data) {
+export function setRadiusScale (data) {
   // DONE : Set scale
   const it = [...data['2000'], ...data['2015']]
   const accessor = country => country.Population

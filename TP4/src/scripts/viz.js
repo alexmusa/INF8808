@@ -5,7 +5,7 @@
  * @param {number} width The width of the graph
  * @param {number} height The height of the graph
  */
- export function positionLabels (g, width, height) {
+export function positionLabels (g, width, height) {
   // DONE : Position axis labels
   g.selectAll('.y.axis-text')
     .attr('x', -50)
