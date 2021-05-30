@@ -7,6 +7,24 @@
  * @returns {string} The tooltip contents
  */
 export function getContents (d) {
-  // TODO : Generate tooltip contents
-  return ''
+  // DONE : Generate tooltip contents
+
+  const toFixed = (num) => parseFloat(num).toFixed(2)
+  const data = [
+    { label: 'Country : ', value: d['Country Name'] },
+    { label: 'Population : ', value: d.Population },
+    { label: 'GDP : ', value: toFixed(d.GDP) + ' $ (USD)' },
+    { label: 'CO2 emissions : ', value: toFixed(d.CO2) + ' metric tonnes' }
+  ]
+
+  const content = d3.create()
+  data.forEach(element => {
+    content.append('div')
+      .text(element.label)
+      .append('span')
+      .text(element.value)
+      .attr('class', 'tooltip-value')
+  })
+
+  return content.html()
 }
