@@ -17,6 +17,15 @@ export function colorDomain (color, data) {
  */
 export function mapBackground (data, path, showMapLabel) {
   // TODO : Generate the map background and set the hover handlers
+
+  d3.select('.main-svg')
+    .selectAll('path')
+    .data(data.features)
+    .enter()
+    .append('path')
+    .attr('d', path)
+    .attr('fill', '#cdd1c4')
+    .attr('stroke', '#fff')
 }
 
 /**
