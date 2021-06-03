@@ -17,19 +17,14 @@ const TITLES = {
  * @param {*} projection The projection to use to convert the longitude and latitude
  */
 export function convertCoordinates (data, projection) {
-  // TODO : Add an x and y key to each feature object in the data
+  // DONE : Add an x and y key to each feature object in the data
   // representing its x and y position according to the projection.
   // Each resulting object should be structured as :
-
-  /*
-    {
-      type:'...'
-      properties:{...}
-      geometry:{...}
-      x:...
-      y:...
-    }
-  */
+  data.features.forEach(feature => {
+    const coordinates = projection(feature.geometry.coordinates)
+    feature.x = coordinates[0]
+    feature.y = coordinates[1]
+  })
 }
 
 /**
@@ -39,5 +34,8 @@ export function convertCoordinates (data, projection) {
  * @param {*} data The data to be displayed
  */
 export function simplifyDisplayTitles (data) {
-  // TODO : Simplify the titles as required
+  // DONE : Simplify the titles as required
+  data.features.forEach(feature => {
+    feature.properties.TYPE_SITE_INTERVENTION = TITLES[feature.properties.TYPE_SITE_INTERVENTION]
+  })
 }
