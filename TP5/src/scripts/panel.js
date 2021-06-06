@@ -56,6 +56,8 @@ export function display (d, color) {
  */
 function setTitle (g, d, color) {
   // TODO : Set the title
+  console.log(d)
+  g.append('text').text('"testing testing." "'+ d.properties.TOPONYME +', we got you 5 by 5"')
 }
 
 /**
