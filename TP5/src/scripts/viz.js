@@ -6,7 +6,7 @@
  */
 export function colorDomain (color, data) {
   // Set the color domain
-  color.domain(data.features.map(feature => feature.properties.TYPE_SITE_INTERVENTION))
+  color.domain(data.features.map(feature => feature.properties.TYPE_SITE_INTERVENTION).sort())
 }
 
 /**
@@ -63,7 +63,7 @@ export function showMapLabel (d, path) {
  * @param {*} panel The display panel, which should be dislayed when a circle is clicked
  */
 export function mapMarkers (data, color, panel) {
-  // TODO : Display the map markers.
+  // DONE : Display the map markers.
   // Their color corresponds to the type of site and their outline is white.
   // Their radius is 5 and goes up to 6 while hovered by the cursor.
   // When clicked, the panel is displayed.

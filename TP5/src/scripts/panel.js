@@ -55,9 +55,9 @@ export function display (d, color) {
  * @param {*} color The color scale to select the title's color
  */
 function setTitle (g, d, color) {
-  // TODO : Set the title
-  console.log(d)
-  g.append('text').text('"testing testing." "'+ d.properties.TOPONYME +', we got you 5 by 5"')
+  // DONE : Set the title
+  g.text(d.properties.NOM_PROJET)
+    .style('color', color(d.properties.TYPE_SITE_INTERVENTION))
 }
 
 /**
@@ -67,7 +67,8 @@ function setTitle (g, d, color) {
  * @param {object} d The data to display
  */
 function setMode (g, d) {
-  // TODO : Set the mode
+  // DONE : Set the mode
+  g.text(d.properties.MODE_IMPLANTATION)
 }
 
 /**
@@ -78,5 +79,6 @@ function setMode (g, d) {
  * @param {object} d The data to display
  */
 function setTheme (g, d) {
-  // TODO : Append a list element representing the given theme
+  // DONE : Append a list element representing the given theme
+  g.append('li').text(d)
 }
