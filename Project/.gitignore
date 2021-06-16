@@ -1,0 +1,7 @@
+**/dist
+**/.cache
+**/node_modules
+
+# It is a common mistake to ignore package-lock.json: https://docs.npmjs.com/cli/v7/configuring-npm/package-lock-json
+# That file should be commited.
+!package-lock.json
