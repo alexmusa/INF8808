@@ -6,6 +6,8 @@
       <meta name="Description" content="Code for the final project in INF8808E">
       <title>PROJECT | INF8808</title>
 
+      <link rel="preconnect" href="https://fonts.gstatic.com">
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
       <link rel="stylesheet" href="assets/style.css">
     </head>
 
@@ -17,15 +19,25 @@
       </header>
       <main>
         <div class='graph-1'>
-          <svg id='bubble-chart'>
+          <div id='checkboxes-container'>
+            <p id='checkbox-cont-label'>Compare by </p>
+            <div id='checkboxes'></div>
+          </div>
+          
+          <svg id='scatter-plot'>
           </svg>
+          <div id='time-slider-container'>
+            <p id='time-value'></p>
+            <div id='time-slider'></div>
+          </div>
         </div>
         <div class='graph-2'>
-          <svg id='line-chart'>
+          <svg id='table'>
           </svg>
         </div>
       </main>
-      <script src="https://d3js.org/d3.v5.js"></script>
+      <script src="https://d3js.org/d3.v6.js"></script>
+      <script src="https://unpkg.com/d3-simple-slider"></script>
       <script defer src="index.js"></script>
     </body>
 </html>
