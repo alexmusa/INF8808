@@ -25,6 +25,7 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
 
 svg {
@@ -32,14 +33,16 @@ svg {
 }
 
 .d3-tip {
-    line-height: 1;
-    font-weight: bold;
-    padding: 12px;
-    background: rgba(54, 32, 35, 0.8);
+    font-family: 'Roboto', sans-serif;
+    padding: 10px;
+    background: rgba(52, 108, 228, 0.8);
     color: #fff;
-    border-radius: 2px;
+    border-radius: 4px;
     pointer-events: none;
-  }
+    box-shadow: 0 2px 5px 1px rgb(64 60 67 / 16%);
+    opacity: 1;
+}
+
 
 h1 {
     font-family: 'Times', 'serif';
@@ -57,6 +60,9 @@ h2 {
     transform-origin: center;
     transform-box: fill-box;
     text-anchor: middle;
+    font-weight: bold;
+    font-size: 0.9em;
+    font-family: 'Roboto', sans-serif;
 }
 
 .button {
@@ -77,4 +83,21 @@ h2 {
 
 .axis text {
     fill : #362023;
+}
+
+#time-slider-container {
+    text-align: center;
+}
+
+
+/* CHECKBOXES*/
+#checkboxes-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+.checkbox {
+    cursor: pointer;
+    margin-left: 20px;
 }
