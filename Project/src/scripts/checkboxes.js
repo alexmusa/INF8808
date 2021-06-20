@@ -6,7 +6,7 @@ export class CheckBoxesHandler {
 
   setCheckboxes (attributes, onSelectionChange) {
     const attr = [...attributes.entries()]
-      .filter(att => !['Recipient Name', 'Title', 'Date', 'Final Value', 'Original Value', 'Comments'].includes(att[0]))
+      .filter(att => !['Period', 'Title', 'Date', 'Final Value', 'Original Value', 'Comments'].includes(att[0]))
 
     d3.select('#checkboxes').selectAll()
       .data(attr).enter()
