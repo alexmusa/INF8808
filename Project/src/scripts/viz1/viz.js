@@ -9,7 +9,7 @@ export function positionLabels (g, width, height) {
     .attr('y', height + 50)
 }
 
-export function update (categories, xScale, yScale, tip) {
+export function update (categories, xScale, yScale, tip, onCircleClick) {
   d3.select('#graph-1-g').selectAll('circle')
     .data(categories).join('circle')
     .attr('r', 7)
@@ -17,6 +17,7 @@ export function update (categories, xScale, yScale, tip) {
     .style('cursor', 'pointer')
     .on('mouseover', tip.show)
     .on('mouseout', tip.hide)
+    .on('click', onCircleClick)
     .transition().duration(2000)
     .attr('cx', (category) => xScale(category.numberOfContracts))
     .attr('cy', (category) => yScale(category.totalFinancing))

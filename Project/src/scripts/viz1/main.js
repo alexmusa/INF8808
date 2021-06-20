@@ -5,13 +5,14 @@ import * as tooltip from './tooltip.js'
 import * as sliders from './sliders.js'
 
 export default class Viz1 {
-  constructor (dataHandler, checkBoxesHandler) {
+  constructor (dataHandler, checkBoxesHandler, onCircleClick) {
     // Initialize members
     this.dataHandler = dataHandler
     this.checkBoxesHandler = checkBoxesHandler
     this.slider = new sliders.Slider()
     this.svgSize = { width: 1100, height: 600 }
     this.margin = { top: 30, right: 10, bottom: 100, left: 70 }
+    this.onCircleClick = onCircleClick
 
     this.setSizing()
 
@@ -45,7 +46,7 @@ export default class Viz1 {
 
     helper.drawAxis(this.xScale, this.yScale, this.graphSize.height)
 
-    viz.update(categories, this.xScale, this.yScale, this.tip)
+    viz.update(categories, this.xScale, this.yScale, this.tip, this.onCircleClick)
   }
 
   getCategories () {

@@ -1,7 +1,7 @@
 'use strict'
 
 import Viz1 from './scripts/viz1/main'
-//import Viz2 from './scripts/viz2/export.js'
+import Viz2 from './scripts/viz2/main'
 import * as checkboxes from './scripts/checkboxes'
 import * as preprocess from './scripts/preprocess'
 
@@ -10,8 +10,8 @@ import * as preprocess from './scripts/preprocess'
     const dataHandler = new preprocess.DataHandler(data)
     const checkBoxesHandler = new checkboxes.CheckBoxesHandler()
 
-    const viz1 = new Viz1(dataHandler, checkBoxesHandler)
-    //const viz2 = new Viz2(dataHandler, checkBoxesHandler)
+    const viz1 = new Viz1(dataHandler, checkBoxesHandler, (e, d) => { viz2.update(d) })
+    const viz2 = new Viz2(dataHandler, checkBoxesHandler)
 
     checkBoxesHandler.setCheckboxes(dataHandler.attributes, () => viz1.update())
   })
