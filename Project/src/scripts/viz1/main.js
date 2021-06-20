@@ -98,6 +98,6 @@ export default class Viz1 {
     }
     circle.style('fill', category.color)
 
-    //this.synchronizedViz.update(category)
+    this.synchronizedViz.update(category)
   }
 }
