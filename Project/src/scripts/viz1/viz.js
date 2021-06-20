@@ -13,7 +13,7 @@ export function update (categories, xScale, yScale, tip, onCircleClick) {
   d3.select('#graph-1-g').selectAll('circle')
     .data(categories).join('circle')
     .attr('r', 7)
-    .style('fill', '#888') // TODO: Set color by rank
+    .style('fill', category => category.color) // TODO: Set color by rank
     .style('cursor', 'pointer')
     .on('mouseover', tip.show)
     .on('mouseout', tip.hide)

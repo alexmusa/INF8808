@@ -66,7 +66,7 @@ export class DataHandler {
         return contractIsValid
       })
 
-      // List all attributes for the category. Ex: [{Genre: 'Comedy', Contry: 'Canada'}]
+      // List all attributes for the category. Ex: [{Genre: 'Comedy', Country: 'Canada'}]
       const attributes = combination.map((attrValue, index) => {
         const attrObj = {}
         const attrName = attributesNames[index]

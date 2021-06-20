@@ -10,8 +10,8 @@ import * as preprocess from './scripts/preprocess'
     const dataHandler = new preprocess.DataHandler(data)
     const checkBoxesHandler = new checkboxes.CheckBoxesHandler()
 
-    const viz1 = new Viz1(dataHandler, checkBoxesHandler, (e, d) => { viz2.update(d) })
     const viz2 = new Viz2(dataHandler, checkBoxesHandler)
+    const viz1 = new Viz1(dataHandler, checkBoxesHandler, viz2)
 
     checkBoxesHandler.setCheckboxes(dataHandler.attributes, () => viz1.update())
   })
