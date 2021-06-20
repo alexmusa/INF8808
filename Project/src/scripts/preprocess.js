@@ -1,42 +1,15 @@
 
+import cleanUpData from './cleanup'
+
 export class DataHandler {
   constructor (data) {
-    this.data = this.cleanUpData(data)
+    this.data = cleanUpData(data)
 
     // Compute all attributes
     this.attributes = new Map()
     this.data.columns.forEach(attr => {
       this.attributes.set(attr, this.getAll(attr))
     })
-  }
-
-  cleanUpData (data) {
-    const columns = data.columns // save columns
-
-    data = data.filter(d => {
-      // remove contracts with missing attributes
-      return data.columns.every(attr => d[attr] !== '') &&
-            // remove contracts with malformed genre
-            !['N/A', '0'].includes(d.Genre) &&
-            // remove contracts with malformed language
-            !['0'].includes(d.Language)
-    })
-
-    data.forEach(d => {
-      // Parse numbers
-      d['Final Value'] = parseFloat(d['Final Value'])
-      d['Original Value'] = parseFloat(d['Original Value'])
-
-      // Parse dates
-      d.Date = new Date(d.Date + 'T00:00')
-
-      // Trim and replace illegal characters. Ex: replace ' Montréal' by 'Montreal'
-      const cleanString = (s) => { return s.trim().replace('é', 'e') }
-      ['City', 'Province', 'Country', 'Type', 'Purpose', 'Genre'].forEach(attr => { d[attr] = cleanString(d[attr]) })
-    })
-
-    data.columns = columns // restore columns
-    return data
   }
 
   getAll (attributeName) {
@@ -55,8 +28,8 @@ export class DataHandler {
    * attributes: [...]
    * }
    *
-   * @returns {*} an Array of categories for all combinations of 'attributesNames' in the 'timeRange'
-   * @param {*} timeRange The time range to find categories
+   * @returns {object[]} an Array of categories for all combinations of 'attributesNames' in the 'timeRange'
+   * @param {number} timeRange The time range to find categories
    * @param {string[]} attributesNames The names of all selected attributes
    */
   getCategoryData (timeRange, attributesNames) {
