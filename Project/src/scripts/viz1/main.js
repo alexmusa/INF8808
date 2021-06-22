@@ -110,7 +110,6 @@ export default class Viz1 {
       this.timedCategories.set(categoryKey, [category])
       viz.updateFromSelection(event, category.selectionId, true)
     }
-
-    //this.synchronizedViz.update(category)
+    this.synchronizedViz.update(category)
   }
 }
