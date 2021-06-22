@@ -146,3 +146,112 @@ td {
     align-items: center;
     flex-direction: column;
 }
+.currTimeCircle,.prevTimeCircle {
+    fill: gray;
+}
+.prevTimeCircle {
+    stroke-width: 2.5;
+}
+.prevTimeCircle.selection1 {
+    fill: gray;
+    stroke: red;
+}
+.prevTimeCircle.selection2 {
+    fill: gray;
+    stroke: blue;
+}
+.prevTimeCircle.selection3 {
+    fill: gray;
+    stroke: green;
+}
+.prevTimeCircle.selection4 {
+    fill: gray;
+    stroke: yellow;
+}
+.prevTimeCircle.selection5 {
+    fill: gray;
+    stroke: orange;
+}
+.prevTimeCircle.selection6 {
+    fill: gray;
+    stroke: purple;
+}
+.prevTimeCircle.selection7 {
+    fill: gray;
+    stroke: brown;
+}
+.prevTimeCircle.selection8 {
+    fill: gray;
+    stroke: pink;
+}
+.prevTimeCircle.selection9 {
+    fill: gray;
+    stroke: turquoise;
+}
+.prevTimeCircle.selection10 {
+    fill: gray;
+    stroke: indigo;
+}
+.selection1 {
+    fill: red;
+}
+.selection2 {
+    fill: blue;
+}
+.selection3 {
+    fill: green;
+}
+.selection4 {
+    fill: yellow;
+}
+.selection5 {
+    fill: orange;
+}
+.selection6 {
+    fill: purple;
+}
+.selection7 {
+    fill: brown;
+}
+.selection8 {
+    fill: pink;
+}
+.selection9 {
+    fill: turquoise;
+}
+.selection10 {
+    fill: indigo;
+}
+.line {
+    stroke-width: 5;
+}
+.line1 {
+    stroke: red;
+}
+.line2 {
+    stroke: blue;
+}
+.line3 {
+    stroke: green;
+}
+.line4 {
+    stroke: yellow;
+}
+.line5 {
+    stroke: orange;
+}
+.line6 {
+    stroke: purple;
+}
+.line7 {
+    stroke: brown;
+}
+.line8 {
+    stroke: pink;
+}
+.line9 {
+    stroke: turquoise;
+}
+.line10 {
+    stroke: indigo;
+}

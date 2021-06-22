@@ -13,9 +13,9 @@ export default class Viz1 {
     this.slider = new sliders.Slider()
     this.svgSize = { width: 1100, height: 600 }
     this.margin = { top: 30, right: 10, bottom: 100, left: 70 }
-    this.availColors = d3.schemeCategory10
-    this.synchronizedViz = synchronizedViz
+    this.availSelectionIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     this.timedCategories = new Map()
+    this.synchronizedViz = synchronizedViz
     this.onCircleClick = (event, category) => this.onCategoryClick(event, category)
 
     this.setSizing()
@@ -29,7 +29,7 @@ export default class Viz1 {
     viz.positionLabels(g, this.graphSize.width, this.graphSize.height)
 
     const categories = this.getCategories()
-    this.slider.init(this.graphSize.width, categories, () => this.update())
+    this.slider.init(this.graphSize.width, categories, () => this.updateTimeRange())
     this.update(categories)
   }
 
@@ -42,37 +42,50 @@ export default class Viz1 {
   }
 
   // This method is called whenever the user changes their selection
-  update (categories) {
-    if (!categories) categories = this.getCategories()
+  updateTimeRange () {
+    var categories = this.getCategories()
 
     this.timedCategories.forEach((timedCategories, categoryKey) => {
       var lastTimedCategory = timedCategories[0]
-      lastTimedCategory.isNew = false
-      lastTimedCategory.isLast = true
       timedCategories.unshift(lastTimedCategory)
 
       categories.every(category => {
         if (JSON.stringify(category.attributes) === categoryKey) {
           category.period = this.slider.range
-          category.color = lastTimedCategory.color
-          category.isNew = true
-          category.isLast = false
+          category.selectionId = lastTimedCategory.selectionId
           timedCategories[0] = category
           return false // break loop
         }
         return true // continue loop
       })
-      timedCategories.forEach((timedCategory, index) => {
-        if (index > 0) categories.push(timedCategory)
-      })
     })
+
+    var timedCategories = Array.from(this.timedCategories.values())
+    var allCategories = categories.concat([].concat(...timedCategories))
+
+    this.xScale = scales.setXScale(this.graphSize.width, allCategories)
+    this.yScale = scales.setYScale(this.graphSize.height, allCategories)
+
+    helper.drawAxis(this.xScale, this.yScale, this.graphSize.height)
+
+    viz.update(categories, timedCategories,
+      this.xScale, this.yScale, this.tip, this.onCircleClick)
+  }
+
+  // This method is called whenever the user changes his attributes selection
+  update (categories) {
+    if (!categories) categories = this.getCategories()
+
+    this.availSelectionIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    this.timedCategories = new Map()
 
     this.xScale = scales.setXScale(this.graphSize.width, categories)
     this.yScale = scales.setYScale(this.graphSize.height, categories)
 
     helper.drawAxis(this.xScale, this.yScale, this.graphSize.height)
 
-    viz.update(categories, this.xScale, this.yScale, this.tip, this.onCircleClick)
+    viz.update(categories, this.timedCategories,
+      this.xScale, this.yScale, this.tip, this.onCircleClick)
   }
 
   getCategories () {
@@ -80,24 +93,24 @@ export default class Viz1 {
   }
 
   onCategoryClick (event, category) {
-    var circle = d3.select(event.target)
-    const categoryColor = category.color
+    const categorySelId = category.selectionId
     const categoryKey = JSON.stringify(category.attributes)
 
-    if (circle.attr('class') === 'selected') {
-      circle.attr('class', '')
-      this.availColors.unshift(categoryColor)
-      category.period = null
-      category.color = 'black'
-      this.timedCategories.set(categoryKey, null)
-    } else if (this.availColors.length > 0) {
-      circle.attr('class', 'selected')
+    if (category.selectionId !== undefined) {
+      category.period = undefined
+      category.selectionId = undefined
+      category.isSelected = undefined
+      this.availSelectionIds.unshift(categorySelId)
+      this.timedCategories.delete(categoryKey)
+      viz.updateFromSelection(event, categorySelId, false)
+    } else if (this.availSelectionIds.length > 0) {
       category.period = this.slider.range
-      category.color = this.availColors.pop()
+      category.selectionId = this.availSelectionIds.pop()
+      category.isSelected = true
       this.timedCategories.set(categoryKey, [category])
+      viz.updateFromSelection(event, category.selectionId, true)
     }
-    circle.style('fill', category.color)
 
-    this.synchronizedViz.update(category)
+    //this.synchronizedViz.update(category)
   }
 }

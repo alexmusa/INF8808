@@ -39,7 +39,7 @@ export function appendGraphLabels (g) {
 
 export function drawAxis (xScale, yScale, height) {
   d3.select('.x.axis')
-    .transition().duration(2000)
+    .transition().duration(1000)
     .attr('transform', 'translate( 0, ' + height + ')')
     .call(d3.axisBottom(xScale).tickSizeOuter(0).tickArguments([5, '.0r']))
   d3.select('.y.axis')

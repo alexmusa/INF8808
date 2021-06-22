@@ -4,6 +4,20 @@ import d3Tip from 'd3-tip'
 export function getContents (category) {
   const content = d3.create()
 
+  // Period
+  if (category.period !== undefined) {
+    const startDate = category.period.startDate.toISOString().slice(0, 10)
+    const endDate = category.period.endDate.toISOString().slice(0, 10)
+
+    content.append('div')
+      .append('b').text('Period: ')
+      .append('text')
+      .attr('class', 'tooltip-value')
+      .text(startDate + ' to ' + endDate)
+
+    content.append('hr')
+  }
+
   // Attributes
   category.attributes.forEach(attr => {
     const key = Object.keys(attr)[0]; const value = attr[key]

@@ -36,7 +36,7 @@ export class Slider {
       .on('end', val => {
         this.range = { startDate: new Date(val[0]), endDate: new Date(val[1]) }
         this.updateValue(val)
-        onNewRangeSelected()
+        onNewRangeSelected(this.range)
       })
 
     const gTime = d3.select('div#time-slider')
