@@ -19,6 +19,7 @@ jobs:
           pushd TP4; npm install; popd
           pushd TP5; npm install; popd
           pushd Project; npm install; popd
+          pushd Prod; npm install; popd
       - name: Set Base URL
         run: |
           sed -i 's/parcel build .\/src\/index\.html/parcel build .\/src\/index\.html --no-minify --public-url \/TP1\//g' TP1/package.json
@@ -27,6 +28,7 @@ jobs:
           sed -i 's/parcel build .\/src\/index\.html/parcel build .\/src\/index\.html --no-minify --public-url \/TP4\//g' TP4/package.json
           sed -i 's/parcel build .\/src\/index\.html/parcel build .\/src\/index\.html --no-minify --public-url \/TP5\//g' TP5/package.json
           sed -i 's/parcel build .\/src\/index\.html/parcel build .\/src\/index\.html --no-minify --public-url \/Project\//g' Project/package.json
+          sed -i 's/parcel build .\/src\/index\.html/parcel build .\/src\/index\.html --no-minify --public-url \/Prod\//g' Prod/package.json
       - name: Build
         run: |
           pushd TP1; npm run build; popd
@@ -35,6 +37,7 @@ jobs:
           pushd TP4; npm run build; popd
           pushd TP5; npm run build; popd
           pushd Project; npm run build; popd
+          pushd Prod; npm run build; popd
       - name: Copy
         run: |
           mkdir -p public/TP1
@@ -49,6 +52,8 @@ jobs:
           cp TP5/dist/* public/TP5/
           mkdir -p public/Project
           cp Project/dist/* public/Project/
+          mkdir -p public/Prod
+          cp Prod/dist/* public/Prod/
       - name: Archive Production Artifact
         uses: actions/upload-artifact@master
         with:

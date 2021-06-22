@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="Description" content="Code for the final project in INF8808E">
+      <title>PROJECT | INF8808</title>
+
+      <link rel="preconnect" href="https://fonts.gstatic.com">
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="assets/style.css">
+    </head>
+
+    <body>
+      <header>
+          <h2>
+            Fundings from Telefilm Canada
+          </h2>
+      </header>
+      <main>
+        <div class='graph-1'>
+          <div id='checkboxes-container'>
+            <p id='checkbox-cont-label'>Compare by </p>
+            <div id='checkboxes'></div>
+          </div>
+          
+          <svg id='scatter-plot'>
+          </svg>
+          <div id='time-slider-container'>
+            <p id='time-value'></p>
+            <div id='time-slider'></div>
+          </div>
+        </div>
+        <div class='graph-2'>
+          <div id='table'></div>
+        </div>
+      </main>
+      <script src="https://d3js.org/d3.v6.js"></script>
+      <script src="https://unpkg.com/d3-simple-slider"></script>
+      <script defer src="index.js"></script>
+    </body>
+</html>
