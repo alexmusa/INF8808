@@ -49,8 +49,8 @@ export default class Viz1 {
       var lastTimedCategory = timedCategories[0]
       timedCategories.unshift(lastTimedCategory)
 
-      var category = categories.get(categoryKey)
-      if (category === undefined) {
+      var category = categories.get(categoryKey) || {}
+      if (Object.keys(category).length === 0) {
         category.numberOfContracts = 0
         category.totalFinancing = 0.0
         category.contracts = []
