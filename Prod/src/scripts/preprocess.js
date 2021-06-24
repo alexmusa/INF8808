@@ -1,4 +1,3 @@
-
 import cleanUpData from './cleanup'
 
 export class DataHandler {
@@ -20,68 +19,36 @@ export class DataHandler {
   }
 
   /**
-   * Returns array that contains objects that look like this:
-   * {
-   * numberOfContracts: 1,
-   * totalFinancing: 10,
-   * data: [...],
-   * attributes: [...]
-   * }
+   * Returns a map that contains objects that look like this:
+   * { Attr1: ValueAttr1, ...} -> {
+   *   numberOfContracts: 1,
+   *   totalFinancing: 10,
+   *   contracts: [...],
+   *   }
    *
-   * @returns {object[]} an Array of categories for all combinations of 'attributesNames' in the 'timeRange'
+   * @returns {object[]} an Map of categories for all combinations of 'attributesNames' in the 'timeRange'
    * @param {number} timeRange The time range to find categories
    * @param {string[]} attributesNames The names of all selected attributes
    */
   getCategoryData (timeRange, attributesNames) {
-    const selectedAttributes = attributesNames.map(name => this.attributes.get(name))
-    let combinations = selectedAttributes.length ? selectedAttributes[0].map(a => [a]) : []
-
-    // Get all combinations of attributes
-    if (selectedAttributes.length > 1) {
-      selectedAttributes.forEach((attributes, index) => {
-        if (index > 0) {
-          const newCombinations = []
-          attributes.forEach(attr => {
-            combinations.forEach(res => {
-              newCombinations.push(res.concat(attr))
-            })
-          })
-          combinations = newCombinations
-        }
-      })
-    }
-
-    const result = []
-    combinations.forEach(combination => {
-      let totalFinancing = 0
-
-      // Get the data for the category
-      const categoryData = this.data.filter(contract => {
-        const contractIsWithinRange = timeRange ? (contract.Date >= timeRange.startDate && contract.Date <= timeRange.endDate) : true
-        const contractIsValid = contractIsWithinRange && combination.every((attributeValue, index) => {
-          const attributeName = attributesNames[index]
-          return contract[attributeName] === attributeValue
-        })
-        if (contractIsValid) totalFinancing += contract['Final Value']
-        return contractIsValid
-      })
-
-      // List all attributes for the category. Ex: [{Genre: 'Comedy', Country: 'Canada'}]
-      const attributes = combination.map((attrValue, index) => {
-        const attrObj = {}
-        const attrName = attributesNames[index]
-        attrObj[attrName] = attrValue
-        return attrObj
-      })
-
-      result.push({
-        numberOfContracts: categoryData.length,
-        totalFinancing: totalFinancing,
-        data: categoryData,
-        attributes: attributes
-      })
+    var categories = new Map()
+    var contracts = this.data.filter(contract => {
+      return !timeRange || (contract.Date >= timeRange.startDate && contract.Date <= timeRange.endDate)
     })
 
-    return result
+    contracts.forEach(contract => {
+      const categoryKey = JSON.stringify(Object.fromEntries(attributesNames.map(attributeName => {
+        return [attributeName, contract[attributeName]]
+      })))
+
+      var category = categories.get(categoryKey) || {}
+      category.numberOfContracts = (category.numberOfContracts || 0) + 1
+      category.totalFinancing = (category.totalFinancing || 0.0) + contract['Final Value']
+      category.contracts = (category.contracts || []).concat(contract)
+
+      categories.set(categoryKey, category)
+    })
+
+    return categories
   }
 }

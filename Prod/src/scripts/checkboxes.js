@@ -1,4 +1,3 @@
-
 export class CheckBoxesHandler {
   constructor () {
     this.selectedBoxes = ['Language'] // Attributes currently selected by the user

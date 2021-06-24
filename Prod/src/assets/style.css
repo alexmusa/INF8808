@@ -149,6 +149,9 @@ td {
 .currTimeCircle,.prevTimeCircle {
     fill: gray;
 }
+circle:not([class*=selection]) {
+    opacity: 0.5;
+}
 .prevTimeCircle {
     stroke-width: 2.5;
 }

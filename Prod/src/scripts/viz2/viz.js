@@ -1,4 +1,3 @@
-
 /**
  * @param {object} category The category being processed
  */
@@ -23,12 +22,12 @@ function showTitle (category) {
     .attr('class', 'table-label')
 
   title.append('label')
-    .text(category.data.length ? 'Showing contracts with:' : 'No contracts for:')
+    .text(category[1].contracts.length ? 'Showing contracts with:' : 'No contracts for:')
     .style('font-weight', 'bold')
 
   const attributes = title.append('p')
   let isFirstAttr = true
-  category.attributes.forEach(attr => {
+  Object.keys(JSON.parse(category[0])).forEach(attr => {
     const key = Object.keys(attr)[0]
     const seperator = isFirstAttr ? '' : ', and'
     attributes.append('text')
@@ -82,11 +81,12 @@ function drawTable (attributes, rows) {
  * @returns {object} The same category without the excluded attributes in its data
  */
 function parseData (category) {
-  return category.data.map(d => {
+  const categoryAttrs = Object.keys(JSON.parse(category[0]))
+  return category[1].contracts.map(contract => {
     const newContract = {}
-    Object.keys(d).forEach(k => {
-      if (category.attributes.every(attr => k !== Object.keys(attr)[0])) {
-        newContract[k] = d[k]
+    Object.keys(contract).forEach(contractAttr => {
+      if (categoryAttrs.every(attr => contract !== Object.keys(attr)[0])) {
+        newContract[contractAttr] = contract[contractAttr]
       }
     })
     newContract.Date = d3.timeFormat('%Y %b %d')(newContract.Date)

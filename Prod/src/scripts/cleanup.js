@@ -1,4 +1,3 @@
-
 /**
  * @param {object[]} data The initial (raw) data
  * @returns {object[]} The clean data

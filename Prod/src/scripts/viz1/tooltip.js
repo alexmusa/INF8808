@@ -4,6 +4,9 @@ import d3Tip from 'd3-tip'
 export function getContents (category) {
   const content = d3.create()
 
+  const categoryAttributes = JSON.parse(category[0])
+  category = category[1]
+
   // Period
   if (category.period !== undefined) {
     const startDate = category.period.startDate.toISOString().slice(0, 10)
@@ -19,8 +22,8 @@ export function getContents (category) {
   }
 
   // Attributes
-  category.attributes.forEach(attr => {
-    const key = Object.keys(attr)[0]; const value = attr[key]
+  Object.entries(categoryAttributes).forEach(attr => {
+    const key = attr[0]; const value = attr[1]
     content.append('div')
       .append('b').text(key + ' : ')
       .append('text')

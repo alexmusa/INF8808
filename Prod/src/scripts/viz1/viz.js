@@ -1,4 +1,4 @@
-import { schemeDark2 } from "d3"
+import { schemeDark2 } from 'd3'
 
 export function positionLabels (g, width, height) {
   g.selectAll('.y.axis-text')
@@ -13,6 +13,7 @@ export function positionLabels (g, width, height) {
 export function update (categories, timedCategories, xScale, yScale, tip, onCircleClick) {
   var svg = d3.select('#graph-1-g')
 
+  categories = Array.from(categories.entries())
   svg.selectAll('.currTimeCircle')
     .data(categories).join('circle')
     .classed('currTimeCircle', true)
@@ -22,8 +23,8 @@ export function update (categories, timedCategories, xScale, yScale, tip, onCirc
     .on('mouseout', tip.hide)
     .on('click', onCircleClick)
     .transition().duration(1000)
-    .attr('cx', category => xScale(category.numberOfContracts))
-    .attr('cy', category => yScale(category.totalFinancing))
+    .attr('cx', category => xScale(category[1].numberOfContracts))
+    .attr('cy', category => yScale(category[1].totalFinancing))
 
   if (timedCategories.size === 0) {
     svg.selectAll('line').remove()
@@ -31,61 +32,61 @@ export function update (categories, timedCategories, xScale, yScale, tip, onCirc
     svg.selectAll('circle').attr('class', 'currTimeCircle')
   }
 
+  timedCategories = Array.from(timedCategories.entries())
   timedCategories.forEach(categories => {
+    categories = categories[1].map(category => [categories[0], category])
     var prevTimedCategories = categories.slice(1)
     var currTimedCategory = categories[0]
 
-    svg.selectAll('line.line' + currTimedCategory.selectionId)
+    svg.selectAll('line.line' + currTimedCategory[1].selectionId)
       .data(prevTimedCategories).join(
         enter => {
           enter.append('line')
-            .attr('class', category => 'line line' + category.selectionId)
-            .attr('x1', (category, index) => xScale(categories[index].numberOfContracts))
-            .attr('x2', (category, index) => xScale(categories[index].numberOfContracts))
-            .attr('y1', (category, index) => yScale(categories[index].totalFinancing))
-            .attr('y2', (category, index) => yScale(categories[index].totalFinancing))
+            .attr('class', category => 'line line' + category[1].selectionId)
+            .attr('x1', (category, index) => xScale(categories[index][1].numberOfContracts))
+            .attr('x2', (category, index) => xScale(categories[index][1].numberOfContracts))
+            .attr('y1', (category, index) => yScale(categories[index][1].totalFinancing))
+            .attr('y2', (category, index) => yScale(categories[index][1].totalFinancing))
             .transition().delay(1000).duration(1000)
-            .attr('x2', category => xScale(category.numberOfContracts))
-            .attr('y2', category => yScale(category.totalFinancing))
+            .attr('x2', category => xScale(category[1].numberOfContracts))
+            .attr('y2', category => yScale(category[1].totalFinancing))
         },
         update => {
-          update
-            .raise()
-            .transition().duration(1000)
-            .attr('x1', (category, index) => xScale(categories[index].numberOfContracts))
-            .attr('x2', category => xScale(category.numberOfContracts))
-            .attr('y1', (category, index) => yScale(categories[index].totalFinancing))
-            .attr('y2', category => yScale(category.totalFinancing))
+          update.transition().duration(1000)
+            .attr('x1', (category, index) => xScale(categories[index][1].numberOfContracts))
+            .attr('x2', category => xScale(category[1].numberOfContracts))
+            .attr('y1', (category, index) => yScale(categories[index][1].totalFinancing))
+            .attr('y2', category => yScale(category[1].totalFinancing))
         },
         exit => exit.remove())
 
-    svg.selectAll('.prevTimeCircle.selection' + currTimedCategory.selectionId)
+    svg.selectAll('.prevTimeCircle.selection' + currTimedCategory[1].selectionId)
       .data(prevTimedCategories).join(
         enter => {
           enter.append('circle')
-            .attr('class', category => 'prevTimeCircle selection' + category.selectionId)
+            .attr('class', category => 'prevTimeCircle selection' + category[1].selectionId)
             .style('visibility', 'hidden')
             .attr('r', 6)
             .on('mouseover', tip.show)
             .on('mouseout', tip.hide)
-            .attr('cx', (category, index) => xScale(categories[index].numberOfContracts))
-            .attr('cy', (category, index) => yScale(categories[index].totalFinancing))
+            .attr('cx', (category, index) => xScale(categories[index][1].numberOfContracts))
+            .attr('cy', (category, index) => yScale(categories[index][1].totalFinancing))
             .transition().delay(1000).duration(1000)
             .on('start', (category, index, circles) => {
               d3.select(circles[index]).style('visibility', 'visible')
             })
-            .attr('cx', category => xScale(category.numberOfContracts))
-            .attr('cy', category => yScale(category.totalFinancing))
+            .attr('cx', category => xScale(category[1].numberOfContracts))
+            .attr('cy', category => yScale(category[1].totalFinancing))
         },
         update => {
-          update
-            .raise()
-            .transition().duration(1000)
-            .attr('cx', category => xScale(category.numberOfContracts))
-            .attr('cy', category => yScale(category.totalFinancing))
+          update.transition().duration(1000)
+            .attr('cx', category => xScale(category[1].numberOfContracts))
+            .attr('cy', category => yScale(category[1].totalFinancing))
         },
         exit => exit.remove())
   })
+
+  svg.selectAll('circle').raise()
 }
 
 export function updateFromSelection (event, selectionId, isSelected) {
