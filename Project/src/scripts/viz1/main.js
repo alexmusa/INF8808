@@ -2,6 +2,7 @@ import * as helper from './helper.js'
 import * as scales from './scales.js'
 import * as viz from './viz.js'
 import * as tooltip from './tooltip.js'
+import * as legend from './legend.js'
 import * as sliders from './sliders.js'
 import { color } from 'd3'
 
@@ -11,11 +12,12 @@ export default class Viz1 {
     this.dataHandler = dataHandler
     this.checkBoxesHandler = checkBoxesHandler
     this.slider = new sliders.Slider()
-    this.svgSize = { width: 1100, height: 600 }
-    this.margin = { top: 30, right: 10, bottom: 100, left: 70 }
+    this.svgSize = { width: 1500, height: 600 }
+    this.margin = { top: 30, right: 210, bottom: 100, left: 270 }
     this.availSelectionIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     this.timedCategories = new Map()
     this.synchronizedViz = synchronizedViz
+    this.selfViz = this
     this.onCircleClick = (event, category) => this.onCategoryClick(event, category)
 
     this.setSizing()
@@ -26,11 +28,16 @@ export default class Viz1 {
     helper.appendAxes(g)
     helper.appendGraphLabels(g)
 
-    viz.positionLabels(g, this.graphSize.width, this.graphSize.height)
+    this.coordinates = [0, 0]
+    viz.init(g, this.graphSize.width, this.graphSize.height,
+      (event, viz) => this.onCoordinatesChange(event, this),
+      (event, coordinates) => this.onScrollDomain(event, this.coordinates))
 
     const categories = this.getCategories()
     this.slider.init(this.graphSize.width, categories, () => this.updateTimeRange())
     this.update(categories)
+
+    viz.selectFirst()
   }
 
   setSizing () {
@@ -49,12 +56,7 @@ export default class Viz1 {
       var lastTimedCategory = timedCategories[0]
       timedCategories.unshift(lastTimedCategory)
 
-      var category = categories.get(categoryKey) || {}
-      if (Object.keys(category).length === 0) {
-        category.numberOfContracts = 0
-        category.totalFinancing = 0.0
-        category.contracts = []
-      }
+      var category = categories.get(categoryKey)
       category.period = this.slider.range
       category.selectionId = lastTimedCategory.selectionId
       timedCategories[0] = category
@@ -103,16 +105,27 @@ export default class Viz1 {
     if (category.selectionId !== undefined) {
       category.period = undefined
       category.selectionId = undefined
-      category.isSelected = undefined
       this.availSelectionIds.unshift(categorySelId)
       this.timedCategories.delete(categoryKey)
       viz.updateFromSelection(event, categorySelId, false)
+      legend.updateFromSelection(categorySelId, false)
     } else if (this.availSelectionIds.length > 0) {
       category.period = this.slider.range
       category.selectionId = this.availSelectionIds.pop()
-      category.isSelected = true
       this.timedCategories.set(categoryKey, [category])
       viz.updateFromSelection(event, category.selectionId, true)
+      legend.updateFromSelection(category.selectionId, true)
     }
+  }
+
+  onCoordinatesChange (event, viz) {
+    viz.coordinates = d3.pointer(event, event.target)
+  }
+
+  onScrollDomain (event, coordinates) {
+    this.xScale = scales.setDomain(this.xScale, coordinates)
+    this.yScale = scales.setDomain(this.yScale, coordinates)
+
+    viz.updateFromZoom(this.xScale, this.yScale)
   }
 }

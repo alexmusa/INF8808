@@ -10,6 +10,12 @@ export function positionLabels (g, width, height) {
     .attr('y', height + 50)
 }
 
+export function init (g, width, height, onMouseMove, onScroll) {
+  positionLabels(g, width, height)
+  d3.select('#scatter-plot').on('mousemove', onMouseMove)
+  d3.select(window).on('scroll', onScroll)
+}
+
 export function update (categories, timedCategories, xScale, yScale, tip, onCircleClick) {
   var svg = d3.select('#graph-1-g')
 
@@ -30,6 +36,7 @@ export function update (categories, timedCategories, xScale, yScale, tip, onCirc
     svg.selectAll('line').remove()
     svg.selectAll('.prevTimeCircle').remove()
     svg.selectAll('circle').attr('class', 'currTimeCircle')
+    d3.select('#legend').selectAll('div').remove()
   }
 
   timedCategories = Array.from(timedCategories.entries())
@@ -104,4 +111,12 @@ export function updateFromSelection (event, selectionId, isSelected) {
       .selectAll('.prevTimeCircle.selection' + selectionId)
       .remove()
   }
+}
+
+export function selectFirst () {
+  d3.select('#graph-1-g').select('circle').dispatch('click')
+}
+
+export function updateFromZoom (xScale, yScale) {
+  console.log(xScale, yScale)
 }

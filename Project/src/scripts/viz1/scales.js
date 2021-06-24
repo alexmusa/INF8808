@@ -11,3 +11,7 @@ export function setYScale (height, categories) {
     .domain([d3.min(categories, accessor), d3.max(categories, accessor)])
     .range([height, 0])
 }
+
+export function setDomain (scale, domain) {
+  return scale.domain(domain)
+}
