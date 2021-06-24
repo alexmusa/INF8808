@@ -1,4 +1,3 @@
-
 export class Slider {
   constructor () {
     this.range = undefined
@@ -6,8 +5,13 @@ export class Slider {
   }
 
   getAllDates (categories) {
-    const data = categories.reduce((acc, curr) => acc.concat(curr.data), [])
-    return data.reduce((acc, curr) => acc.concat(curr.Date), []).sort((a, b) => a - b)
+    /*const data = categories.reduce((acc, curr) => acc.concat(curr.data), [])
+    return data.reduce((acc, curr) => acc.concat(curr.Date), []).sort((a, b) => a - b)*/
+    const dates = new Set()
+    categories.forEach(category => {
+      category.contracts.forEach(contract => dates.add(contract.Date))
+    })
+    return Array.from(dates).sort((date1, date2) => date1 - date2)
   }
 
   init (width, categories, onNewRangeSelected) {

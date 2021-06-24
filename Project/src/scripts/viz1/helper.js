@@ -1,4 +1,3 @@
-
 export function generateG (margin) {
   return d3.select('.graph-1')
     .select('svg')

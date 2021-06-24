@@ -1,4 +1,3 @@
-
 export function setXScale (width, categories) {
   const accessor = category => category.numberOfContracts
   return d3.scaleLinear()

@@ -49,26 +49,26 @@ export default class Viz1 {
       var lastTimedCategory = timedCategories[0]
       timedCategories.unshift(lastTimedCategory)
 
-      categories.every(category => {
-        if (JSON.stringify(category.attributes) === categoryKey) {
-          category.period = this.slider.range
-          category.selectionId = lastTimedCategory.selectionId
-          timedCategories[0] = category
-          return false // break loop
-        }
-        return true // continue loop
-      })
+      var category = categories.get(categoryKey) || {}
+      if (Object.keys(category).length === 0) {
+        category.numberOfContracts = 0
+        category.totalFinancing = 0.0
+        category.contracts = []
+      }
+      category.period = this.slider.range
+      category.selectionId = lastTimedCategory.selectionId
+      timedCategories[0] = category
     })
 
     var timedCategories = Array.from(this.timedCategories.values())
-    var allCategories = categories.concat([].concat(...timedCategories))
+    var allCategories = Array.from(categories.values()).concat([].concat(...timedCategories))
 
     this.xScale = scales.setXScale(this.graphSize.width, allCategories)
     this.yScale = scales.setYScale(this.graphSize.height, allCategories)
 
     helper.drawAxis(this.xScale, this.yScale, this.graphSize.height)
 
-    viz.update(categories, timedCategories,
+    viz.update(categories, this.timedCategories,
       this.xScale, this.yScale, this.tip, this.onCircleClick)
   }
 
@@ -79,8 +79,9 @@ export default class Viz1 {
     this.availSelectionIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     this.timedCategories = new Map()
 
-    this.xScale = scales.setXScale(this.graphSize.width, categories)
-    this.yScale = scales.setYScale(this.graphSize.height, categories)
+    var catValues = Array.from(categories.values())
+    this.xScale = scales.setXScale(this.graphSize.width, catValues)
+    this.yScale = scales.setYScale(this.graphSize.height, catValues)
 
     helper.drawAxis(this.xScale, this.yScale, this.graphSize.height)
 
@@ -93,8 +94,11 @@ export default class Viz1 {
   }
 
   onCategoryClick (event, category) {
+    //this.synchronizedViz.update(category)
+
+    const categoryKey = category[0]
+    category = category[1]
     const categorySelId = category.selectionId
-    const categoryKey = JSON.stringify(category.attributes)
 
     if (category.selectionId !== undefined) {
       category.period = undefined
@@ -110,6 +114,5 @@ export default class Viz1 {
       this.timedCategories.set(categoryKey, [category])
       viz.updateFromSelection(event, category.selectionId, true)
     }
-    this.synchronizedViz.update(category)
   }
 }
