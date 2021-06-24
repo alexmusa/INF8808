@@ -30,6 +30,8 @@ export function update (categories, timedCategories, xScale, yScale, tip, onCirc
     svg.selectAll('line').remove()
     svg.selectAll('.prevTimeCircle').remove()
     svg.selectAll('circle').attr('class', 'currTimeCircle')
+    d3.select('#legend')
+      .selectAll('[class*=selection],.reset').remove()
   }
 
   timedCategories = Array.from(timedCategories.entries())
@@ -104,4 +106,8 @@ export function updateFromSelection (event, selectionId, isSelected) {
       .selectAll('.prevTimeCircle.selection' + selectionId)
       .remove()
   }
+}
+
+export function selectFirst () {
+  d3.select('#graph-1-g').select('circle').dispatch('click')
 }
