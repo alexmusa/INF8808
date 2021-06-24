@@ -57,6 +57,7 @@ export default class Viz1 {
         category.numberOfContracts = 0
         category.totalFinancing = 0.0
         category.contracts = []
+        categories.set(categoryKey, category)
       }
       category.period = this.slider.range
       category.selectionId = lastTimedCategory.selectionId
