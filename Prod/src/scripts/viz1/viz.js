@@ -30,8 +30,7 @@ export function update (categories, timedCategories, xScale, yScale, tip, onCirc
     svg.selectAll('line').remove()
     svg.selectAll('.prevTimeCircle').remove()
     svg.selectAll('circle').attr('class', 'currTimeCircle')
-    d3.select('#legend')
-      .selectAll('[class*=selection],.reset').remove()
+    d3.select('#legend').selectAll('div').remove()
   }
 
   timedCategories = Array.from(timedCategories.entries())
