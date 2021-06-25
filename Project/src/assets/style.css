@@ -108,7 +108,6 @@ h2 {
 }
 input[type=checkbox] {
     margin-left: 3px;
-    transform: translate(0px, 2px);
 }
 
 /*CUSTOM SCROLL BAR*/
@@ -284,22 +283,32 @@ circle:not([class*=selection]) {
 .line10 {
     stroke: indigo;
 }
-#legend {
+.legend {
     height: 25px;
 }
-#legend > div.title {
+.legend > div.title {
     float: left;
     width: 90px;
 }
-#legend > div.reset {
+#sp-legend > div.reset {
     float: left;
     margin-left: 15px;
     cursor: pointer;
     text-decoration: underline;
 }
-#legend > [class*=selection] {
+.legend > [class*=selection] {
     float: left;
     height: 25px;
     width: 70px;
+}
+#sp-legend {
     cursor: pointer;
+}
+#lc-legend {
+    margin-top: 10px;
+}
+#lc-tip {
+    opacity: 0.0;
+    position: absolute;
+    top: 45px;
 }

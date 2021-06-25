@@ -1,50 +1,32 @@
+import * as tooltip from './tooltip.js'
 
-/**
- * @param categories
- * @param graphSize
- * @param margin
- */
-export function draw (categories, graphSize, margin) {
-  const g = d3.select('#lc-legeng-cont')
-    .select('svg')
-    .attr('width', graphSize.width)
-    .attr('height', (categories.length + 2) * 20 + 10)
-    .attr('transform', 'translate(' + margin.left + ',' + 10 + ')')
+export function init (categories) {
+  var legend = d3.select('#lc-legend')
+  legend.selectAll('div:not([class=d3-tip]').remove()
 
-  g.selectAll('circle').remove()
-  g.selectAll('text').remove()
+  var tip = tooltip.init(legend)
 
-  g.selectAll('dots')
-    .data(categories)
-    .enter()
-    .append('circle')
-    .attr('cx', 10)
-    .attr('cy', function (d, i) { return 10 + i * 25 })
-    .attr('r', 7)
-    .attr('class', (d, i) => `selection${10 - i}`)
+  legend.selectAll('div:not([class=d3-tip]')
+    .data(categories).join('div')
+    .attr('class', category => 'selection' + category.selectionId)
+    .on('mouseover', (event, category) => {
+      const target = d3.select(event.target)
+      const selections = legend.selectAll('[class*=selection]')
 
-  g.selectAll('labels')
-    .data(categories)
-    .enter()
-    .append('text')
-    .attr('x', 20)
-    .attr('y', function (d, i) { return 10 + i * 25 })
-    .attr('class', (d, i) => `line${10 - i}`)
-    .text(c => getAttributesTextFromLabel(c.label))
-    .attr('text-anchor', 'left')
-    .style('alignment-baseline', 'middle')
-}
+      var targetIndex = 0
+      selections.each((category, index) => {
+        if (category.selectionId === target.data()[0].selectionId) {
+          targetIndex = index
+        }
+      })
 
-/**
- * @param label
- */
-function getAttributesTextFromLabel (label) {
-  let attributes = ''; let isFirstAttr = true
-  label = JSON.parse(label)
-  Object.keys(label).forEach(key => {
-    const seperator = isFirstAttr ? '' : ', and'
-    attributes += `${seperator} ${key}: ${label[key]}`
-    isFirstAttr = false
-  })
-  return attributes
+      tip.html(tooltip.getContents(category))
+        .style('opacity', 1.0)
+        .style('margin-left', (50 + targetIndex * 70) + 'px')
+    })
+    .on('mouseout', () => tip.style('opacity', 0.0))
+
+  legend.append('div')
+    .attr('class', 'title')
+    .text('Selections').lower()
 }

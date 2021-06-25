@@ -1,4 +1,3 @@
-
 /**
  * @param g
  * @param width
@@ -24,11 +23,10 @@ export function update (g, categories, xScale, yScale) {
   g.selectAll('.path').remove()
   categories.forEach((category, index) => {
     g.append('path')
-      .attr('class', `path line${10 - index}`)
+      .attr('class', 'path line' + category.selectionId)
       .datum(category.contracts)
       .attr('fill', 'none')
       .attr('stroke-width', 2)
-      .style('cursor', 'pointer')
       .attr('d', d3.line()
         .x(function (d) { return xScale(d.date) })
         .y(function (d) { return yScale(d.totalFinancing) })

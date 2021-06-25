@@ -34,17 +34,23 @@ export default class Viz3 {
     this.categories = this.extractCategories(categoriesMap)
     this.update(this.categories)
     this.slider.init(this.graphSize.width, this.categories, (r) => { this.updateFromSlider(r) })
+    legend.init(this.categories)
   }
 
   extractCategories (categoriesMap) {
     const categories = [] // [{label, date, totalFinancing}, ...]
+
     categoriesMap.forEach(categoryData => {
       // Sort contracts by date. TODO: check if this is really necessary.
       const contracts = categoryData[1][0].contracts
       contracts.sort((a, b) => a.Date - b.Date)
 
       // Compute financing evolution for this category.
-      const category = { label: categoryData[0], contracts: [] }
+      const category = {
+        label: categoryData[0],
+        contracts: [],
+        selectionId: categoryData[1][0].selectionId
+      }
       let totalFinancing = 0
       contracts.forEach(d => {
         totalFinancing += d['Final Value']
@@ -76,7 +82,6 @@ export default class Viz3 {
     this.yScale = scales.setYScale(this.graphSize.height, categories)
     helper.drawAxis(this.g, this.xScale, this.yScale, this.graphSize.height)
     viz.update(this.g, categories, this.xScale, this.yScale, this.tip)
-    legend.draw(categories, this.graphSize, this.margin)
   }
 
   updateFromSlider (range) {

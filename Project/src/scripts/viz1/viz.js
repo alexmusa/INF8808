@@ -1,5 +1,3 @@
-import { schemeDark2 } from 'd3'
-
 export function positionLabels (g, width, height) {
   g.selectAll('.y.axis-text')
     .attr('x', -50)
@@ -51,7 +49,7 @@ export function update (categories, timedCategories, xScale, yScale, tip, onCirc
     svg.selectAll('line').remove()
     svg.selectAll('.prevTimeCircle').remove()
     svg.selectAll('circle').attr('class', 'currTimeCircle')
-    d3.select('#legend').selectAll('div').remove()
+    d3.select('#sp-legend').selectAll('div').remove()
   }
 
   timedCategories = Array.from(timedCategories.entries())

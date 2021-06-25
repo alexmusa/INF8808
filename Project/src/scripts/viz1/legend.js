@@ -1,5 +1,5 @@
 export function updateFromSelection (selectionId, isSelected) {
-  var legend = d3.select('#legend')
+  var legend = d3.select('#sp-legend')
 
   if (isSelected) {
     legend.append('div')
@@ -32,7 +32,7 @@ export function updateFromSelection (selectionId, isSelected) {
 }
 
 export function onResetSelection (event) {
-  var legend = d3.select('#legend')
+  var legend = d3.select('#sp-legend')
 
   legend.selectAll('[class*=selection]').remove()
   legend.selectAll('.reset').remove()

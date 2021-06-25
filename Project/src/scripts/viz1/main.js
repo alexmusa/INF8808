@@ -4,7 +4,6 @@ import * as viz from './viz.js'
 import * as tooltip from './tooltip.js'
 import * as legend from './legend.js'
 import * as sliders from './sliders.js'
-import { color } from 'd3'
 
 export default class Viz1 {
   constructor (dataHandler, checkBoxesHandler, viz2, viz3) {
