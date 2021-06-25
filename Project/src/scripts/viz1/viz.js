@@ -16,7 +16,7 @@ export function init (g, width, height, onMouseMove, onScroll) {
   d3.select(window).on('scroll', onScroll)
 }
 
-export function registerEvolutionButtons(viz1, viz3) {
+export function registerEvolutionButtons (viz1, viz3) {
   const historyBtn = d3.select('#history-btn')
   const catBtn = d3.select('#categories-btn')
   historyBtn.on('click', () => {

@@ -19,8 +19,11 @@ export default class Viz1 {
     this.viz2 = viz2
     this.viz3 = viz3
     viz.registerEvolutionButtons(this, viz3)
-    this.selfViz = this
-    this.onCircleClick = (event, category) => this.onCategoryClick(event, category)
+
+    this.clickHandler = new ClickHandler(
+      (event, category) => this.onCategoryClick(event, category),
+      (event, category) => this.viz2.update(category))
+    this.onCircleClick = (event, category) => this.clickHandler.onClick(event, category)
 
     this.setSizing()
 
@@ -91,7 +94,7 @@ export default class Viz1 {
 
     viz.update(categories, this.timedCategories,
       this.xScale, this.yScale, this.tip, this.onCircleClick)
-      
+
     this.viz3.onCategorySelection(this.timedCategories.size > 0)
   }
 
@@ -100,8 +103,6 @@ export default class Viz1 {
   }
 
   onCategoryClick (event, category) {
-    this.viz2.update(category)
-
     const categoryKey = category[0]
     category = category[1]
     const categorySelId = category.selectionId
@@ -132,5 +133,33 @@ export default class Viz1 {
     this.yScale = scales.setDomain(this.yScale, coordinates)
 
     viz.updateFromZoom(this.xScale, this.yScale)
+  }
+}
+
+class ClickHandler {
+  constructor (doClickAction, doDoubleClickAction) {
+    this.timer = 0
+    this.delay = 200
+    this.prevent = false
+
+    this.doClickAction = doClickAction
+    this.doDoubleClickAction = doDoubleClickAction
+  }
+
+  onClick (event, ob) {
+    if (event.detail === null) {
+      this.doClickAction(event, ob)
+    } else if (event.detail === 1) {
+      this.timer = setTimeout(() => {
+        if (!this.prevent) {
+          this.doClickAction(event, ob)
+        }
+        this.prevent = false
+      }, this.delay)
+    } else if (event.detail === 2) {
+      clearTimeout(this.timer)
+      this.prevent = true
+      this.doDoubleClickAction(event, ob)
+    }
   }
 }
