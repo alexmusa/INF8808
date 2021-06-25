@@ -7,7 +7,7 @@ import * as sliders from './sliders.js'
 import { color } from 'd3'
 
 export default class Viz1 {
-  constructor (dataHandler, checkBoxesHandler, synchronizedViz) {
+  constructor (dataHandler, checkBoxesHandler, viz2, viz3) {
     // Initialize members
     this.dataHandler = dataHandler
     this.checkBoxesHandler = checkBoxesHandler
@@ -16,7 +16,9 @@ export default class Viz1 {
     this.margin = { top: 30, right: 210, bottom: 100, left: 270 }
     this.availSelectionIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     this.timedCategories = new Map()
-    this.synchronizedViz = synchronizedViz
+    this.viz2 = viz2
+    this.viz3 = viz3
+    viz.registerEvolutionButtons(this, viz3)
     this.selfViz = this
     this.onCircleClick = (event, category) => this.onCategoryClick(event, category)
 
@@ -89,6 +91,8 @@ export default class Viz1 {
 
     viz.update(categories, this.timedCategories,
       this.xScale, this.yScale, this.tip, this.onCircleClick)
+      
+    this.viz3.onCategorySelection(this.timedCategories.size > 0)
   }
 
   getCategories () {
@@ -96,7 +100,7 @@ export default class Viz1 {
   }
 
   onCategoryClick (event, category) {
-    //this.synchronizedViz.update(category)
+    this.viz2.update(category)
 
     const categoryKey = category[0]
     category = category[1]
@@ -116,6 +120,7 @@ export default class Viz1 {
       viz.updateFromSelection(event, category.selectionId, true)
       legend.updateFromSelection(category.selectionId, true)
     }
+    this.viz3.onCategorySelection(this.timedCategories.size > 0)
   }
 
   onCoordinatesChange (event, viz) {
