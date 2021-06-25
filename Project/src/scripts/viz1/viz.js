@@ -16,6 +16,21 @@ export function init (g, width, height, onMouseMove, onScroll) {
   d3.select(window).on('scroll', onScroll)
 }
 
+export function registerEvolutionButtons(viz1, viz3) {
+  const historyBtn = d3.select('#history-btn')
+  const catBtn = d3.select('#categories-btn')
+  historyBtn.on('click', () => {
+    historyBtn.attr('hidden', true)
+    catBtn.attr('hidden', null)
+    viz3.init([...viz1.timedCategories.entries()])
+  })
+
+  catBtn.on('click', () => {
+    catBtn.attr('hidden', true)
+    historyBtn.attr('hidden', null)
+  })
+}
+
 export function update (categories, timedCategories, xScale, yScale, tip, onCircleClick) {
   var svg = d3.select('#graph-1-g')
 
