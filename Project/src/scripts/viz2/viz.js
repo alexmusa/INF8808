@@ -27,8 +27,8 @@ function showTitle (category) {
 
   const attributes = title.append('p')
   let isFirstAttr = true
-  Object.keys(JSON.parse(category[0])).forEach(attr => {
-    const key = Object.keys(attr)[0]
+  const label = JSON.parse(category[0])
+  Object.keys(label).forEach(key => {
     const seperator = isFirstAttr ? '' : ', and'
     attributes.append('text')
       .text(`${seperator} `)
@@ -36,7 +36,7 @@ function showTitle (category) {
       .text(`${key}: `)
       .style('font-weight', 'bold')
     attributes.append('text')
-      .text(attr[key])
+      .text(label[key])
     isFirstAttr = false
   })
 }
