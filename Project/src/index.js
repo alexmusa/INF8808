@@ -17,8 +17,15 @@ import Viz3 from './scripts/viz3/main'
 
     checkBoxesHandler.setCheckboxes(dataHandler.attributes, () => viz1.update())
 
+    /* Display hidden elements to display all elements at the same moment */
+    var title = d3.select('header > h2 > text')
+    title.style('visibility', 'visible')
+
+    d3.select('#history-btn').style('visibility', 'visible')
+    d3.select('#checkbox-cont-label').style('visibility', 'visible')
+
     var wt = walkthrough.init()
-    d3.select('header > h2 > text').on('click', () => wt.start())
+    title.on('click', () => wt.start())
     wt.start()
   })
 })(d3)

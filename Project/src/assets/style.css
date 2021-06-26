@@ -14,6 +14,7 @@ header {
 }
 header > h2 > text {
     cursor: pointer;
+    visibility: hidden;
 }
 main {
     height: 100%;
@@ -90,6 +91,7 @@ h2 {
 #checkbox-cont-label{
     transform: translate(0px, 13px);
     font-weight: bold;
+    visibility: hidden;
 }
 #checkboxes-container {
     display: flex;
@@ -183,6 +185,9 @@ td {
 #panel-controls {
     width: 100%;
     text-align: center;
+}
+#history-btn {
+    visibility: hidden;
 }
 
 /* CICLES COLORS */
