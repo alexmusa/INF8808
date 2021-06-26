@@ -14,7 +14,6 @@ header {
 }
 header > h2 > text {
     cursor: pointer;
-    visibility: hidden;
 }
 main {
     height: 100%;
