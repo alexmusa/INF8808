@@ -93,7 +93,7 @@ h2 {
 
 /* CHECKBOXES */
 #checkbox-cont-label{
-    transform: translate(0px, 8px);
+    transform: translate(0px, 13px);
     font-weight: bold;
 }
 #checkboxes-container {
