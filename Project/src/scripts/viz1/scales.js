@@ -26,14 +26,3 @@ export function setYScale (height, categories) {
     .domain([d3.min(categories, accessor), d3.max(categories, accessor)])
     .range([height, 0])
 }
-
-/**
- * Computes the domain mapping provided by the given scale
- *
- * @param {*} scale The d3 Scale to use
- * @param {*} domain The domain to map
- * @returns {*} The domain mapping
- */
-export function setDomain (scale, domain) {
-  return scale.domain(domain)
-}

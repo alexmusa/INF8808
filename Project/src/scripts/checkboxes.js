@@ -134,9 +134,8 @@ export class CheckBoxesHandler {
     options.forEach(opt => {
       dropdownMenu
         .append('li')
-        .append('a')
+        .append('text')
         .attr('class', 'dropdown-item')
-        .attr('href', '#')
         .text(opt.text)
         .on('click.forDropdown', function (e, d) {
           if (opt.checkAll) {
@@ -149,6 +148,7 @@ export class CheckBoxesHandler {
             .property('checked', opt.checkAll)
           onSelectionChange()
         })
+      dropdownMenu.append('hr')
     })
   }
 

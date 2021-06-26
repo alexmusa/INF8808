@@ -36,10 +36,7 @@ export default class Viz1 {
     helper.appendAxes(g)
     helper.appendGraphLabels(g)
 
-    this.coordinates = [0, 0]
-    viz.init(g, this.graphSize.width, this.graphSize.height,
-      (event, viz) => this.onCoordinatesChange(event, this),
-      (event, coordinates) => this.onScrollDomain(event, this.coordinates))
+    viz.positionLabels(g, this.graphSize.width, this.graphSize.height)
 
     const categories = this.getCategories()
     this.slider.init(this.graphSize.width, categories, () => this.updateTimeRange())
@@ -65,6 +62,8 @@ export default class Viz1 {
    */
   updateTimeRange () {
     const categories = this.getCategories()
+
+    this.checkBoxesHandler.filterByAttributesSelection(categories)
 
     this.timedCategories.forEach((timedCategories, categoryKey) => {
       const lastTimedCategory = timedCategories[0]
@@ -149,17 +148,6 @@ export default class Viz1 {
       legend.updateFromSelection(category.selectionId, true)
     }
     this.viz3.onCategorySelection(this.timedCategories.size > 0)
-  }
-
-  onCoordinatesChange (event, viz) {
-    viz.coordinates = d3.pointer(event, event.target)
-  }
-
-  onScrollDomain (event, coordinates) {
-    this.xScale = scales.setDomain(this.xScale, coordinates)
-    this.yScale = scales.setDomain(this.yScale, coordinates)
-
-    viz.updateFromZoom(this.xScale, this.yScale)
   }
 }
 

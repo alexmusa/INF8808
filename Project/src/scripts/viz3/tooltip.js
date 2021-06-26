@@ -9,16 +9,20 @@ export function getContents (category) {
   const content = d3.create()
 
   // Attributes
-  const categoryAttributes = JSON.parse(category.label)
-  Object.entries(categoryAttributes).forEach(attr => {
-    const key = attr[0]; const value = attr[1]
+  const categoryAttributes = Object.entries(JSON.parse(category.label))
+  if (categoryAttributes.length === 0) {
     content.append('div')
-      .append('b').text(key + ' : ')
-      .append('text')
-      .attr('class', 'tooltip-value')
-      .text(value)
-  })
-
+      .append('b').text('All contracts')
+  } else {
+    categoryAttributes.forEach(attr => {
+      const key = attr[0]; const value = attr[1]
+      content.append('div')
+        .append('b').text(key + ' : ')
+        .append('text')
+        .attr('class', 'tooltip-value')
+        .text(value)
+    })
+  }
   return content.html()
 }
 

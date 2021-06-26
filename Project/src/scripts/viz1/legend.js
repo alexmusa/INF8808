@@ -17,7 +17,7 @@ export function updateFromSelection (selectionId, isSelected) {
     if (selectionsCount === 1) {
       legend.append('div')
         .attr('class', 'title')
-        .text('Selections').lower()
+        .text('Selections:').lower()
     } else if (selectionsCount === 2) {
       legend.append('div')
         .attr('class', 'reset')

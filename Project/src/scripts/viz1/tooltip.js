@@ -10,7 +10,7 @@ import d3Tip from 'd3-tip'
 export function getContents (category) {
   const content = d3.create()
 
-  const categoryAttributes = JSON.parse(category[0])
+  const categoryAttributes = Object.entries(JSON.parse(category[0]))
   category = category[1]
 
   // Period
@@ -28,15 +28,19 @@ export function getContents (category) {
   }
 
   // Attributes
-  Object.entries(categoryAttributes).forEach(attr => {
-    const key = attr[0]; const value = attr[1]
+  if (categoryAttributes.length === 0) {
     content.append('div')
-      .append('b').text(key + ' : ')
-      .append('text')
-      .attr('class', 'tooltip-value')
-      .text(value)
-  })
-
+      .append('b').text('All contracts')
+  } else {
+    categoryAttributes.forEach(attr => {
+      const key = attr[0]; const value = attr[1]
+      content.append('div')
+        .append('b').text(key + ' : ')
+        .append('text')
+        .attr('class', 'tooltip-value')
+        .text(value)
+    })
+  }
   content.append('hr')
 
   // Number of contracts

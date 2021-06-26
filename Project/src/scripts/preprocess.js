@@ -42,19 +42,22 @@ export class DataHandler {
    */
   getCategoryData (timeRange, attributesNames) {
     const categories = new Map()
-    const contracts = this.data.filter(contract => {
-      return !timeRange || (contract.Date >= timeRange.startDate && contract.Date <= timeRange.endDate)
-    })
 
-    contracts.forEach(contract => {
+    this.data.forEach(contract => {
       const categoryKey = JSON.stringify(Object.fromEntries(attributesNames.map(attributeName => {
         return [attributeName, contract[attributeName]]
       })))
 
-      const category = categories.get(categoryKey) || {}
-      category.numberOfContracts = (category.numberOfContracts || 0) + 1
-      category.totalFinancing = (category.totalFinancing || 0.0) + contract['Final Value']
-      category.contracts = (category.contracts || []).concat(contract)
+      var category = categories.get(categoryKey) || {
+        numberOfContracts: 0,
+        totalFinancing: 0.0,
+        contracts: []
+      }
+      const contractIsInTimeRange = !timeRange || (contract.Date >= timeRange.startDate &&
+                                                   contract.Date <= timeRange.endDate)
+      category.numberOfContracts += (contractIsInTimeRange ? 1 : 0)
+      category.totalFinancing += (contractIsInTimeRange ? contract['Final Value'] : 0.0)
+      category.contracts = category.contracts.concat(contractIsInTimeRange ? contract : [])
 
       categories.set(categoryKey, category)
     })

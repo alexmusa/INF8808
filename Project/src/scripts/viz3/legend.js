@@ -33,5 +33,5 @@ export function init (categories) {
 
   legend.append('div')
     .attr('class', 'title')
-    .text('Selections').lower()
+    .text('Selections:').lower()
 }
