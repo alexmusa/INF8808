@@ -332,3 +332,8 @@ circle:not([class*=selection]) {
     position: absolute;
     top: 45px;
 }
+
+div#scatter-plot {
+    width: 100%;
+    height: auto;
+}

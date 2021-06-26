@@ -1,4 +1,3 @@
-import * as helper from './helper'
 import d3Tip from 'd3-tip'
 
 /**
@@ -59,12 +58,11 @@ export function getContents (category) {
 /**
  * Initializes the tooltip.
  *
- * @param {*} margin The canvas margins
+ * @param {*} g The svg element the tooltip appears on
  * @returns {object} The resulting svg group with the tooltip
  */
-export function init (margin) {
-  const g = helper.generateG(margin)
+export function init (g) {
   const tip = d3Tip().attr('class', 'd3-tip').html(function (event, data) { return getContents(data) })
   g.call(tip)
-  return { g, tip }
+  return tip
 }
