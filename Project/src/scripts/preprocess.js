@@ -5,13 +5,21 @@ import cleanUpData from './cleanup'
  */
 export class DataHandler {
   constructor (data) {
+    // Set defaults
+    this.selectedAttributes = ['Genre', 'Type']
+    this.timeRange = null // TODO
+    this.financingRange = { start: 5000, end: 1000000 }
+    this.numberContractsRange = { start: 0, end: 1000 }
+
     this.data = cleanUpData(data)
 
-    // Compute all attributes
-    this.attributes = new Map()
+    // Compute univers of all possible attributes
+    this.univers = new Map()
     this.data.columns.forEach(attr => {
-      this.attributes.set(attr, this.getAll(attr))
+      this.univers.set(attr, this.computeAllPossible(attr))
     })
+    console.log(this.data)
+    console.log(this.univers)
   }
 
   /**
@@ -21,7 +29,7 @@ export class DataHandler {
    * @param {*} attributeName The name of the targeted attribute
    * @returns {object[]} All possible values for the given attribute name
    */
-  getAll (attributeName) {
+  computeAllPossible (attributeName) {
     return [...this.data.reduce((acc, curr) => {
       acc.add(curr[attributeName])
       return acc
@@ -36,15 +44,12 @@ export class DataHandler {
    *   contracts: [...],
    *  }
    *
-   * @param {object} timeRange The time range in which the categories should be found
+   * @param {object[]} contracts Contracts in which the categories should be found
    * @param {string[]} attributesNames The names of all selected attributes
-   * @returns {Map} A Map of categories for all combinations of 'attributesNames' in the 'timeRange'
+   * @returns {Map} A Map of categories for all combinations of 'attributesNames'
    */
-  getCategoryData (timeRange, attributesNames) {
+  generateCategoryPermutationsData (contracts, attributesNames) {
     const categories = new Map()
-    const contracts = this.data.filter(contract => {
-      return !timeRange || (contract.Date >= timeRange.startDate && contract.Date <= timeRange.endDate)
-    })
 
     contracts.forEach(contract => {
       const categoryKey = JSON.stringify(Object.fromEntries(attributesNames.map(attributeName => {
@@ -59,6 +64,43 @@ export class DataHandler {
       categories.set(categoryKey, category)
     })
 
+    return categories
+  }
+
+  /*
+   *
+   * SCATTER PLOT SECTION
+   *
+   */
+
+  _prefilter (data) {
+    return data.filter(contract => {
+      // return !timeRange || (contract.Date >= timeRange.startDate && contract.Date <= timeRange.endDate)
+      return true
+    })
+  }
+
+  _postfilter (categories) {
+    const filtered = new Map()
+    for (const c of categories.keys()) {
+      const category = categories.get(c)
+      if (!(this.numberContractsRange.start < category.numberOfContracts &&
+            category.numberOfContracts < this.numberContractsRange.end)) {
+        continue
+      }
+      if (!(this.financingRange.start < category.totalFinancing &&
+            category.totalFinancing < this.financingRange.end)) {
+        continue
+      }
+      filtered.set(c, categories.get(c))
+    }
+    return filtered
+  }
+
+  getScatterPlot () {
+    const data = this._prefilter(this.data)
+    const permutations = this.generateCategoryPermutationsData(data, this.selectedAttributes)
+    const categories = this._postfilter(permutations)
     return categories
   }
 }
