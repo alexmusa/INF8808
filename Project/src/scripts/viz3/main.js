@@ -68,6 +68,7 @@ export default class Viz3 {
     categories.forEach(c => {
       categoriesInRange.push({
         label: c.label,
+        selectionId: c.selectionId,
         contracts: c.contracts.filter(contract => contract.date >= range.startDate && contract.date <= range.endDate)
       })
     })
