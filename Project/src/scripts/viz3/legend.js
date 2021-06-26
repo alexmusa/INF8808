@@ -1,10 +1,10 @@
 import * as tooltip from './tooltip.js'
 
 export function init (categories) {
-  var legend = d3.select('#lc-legend')
+  const legend = d3.select('#lc-legend')
   legend.selectAll('div:not([class=d3-tip]').remove()
 
-  var tip = tooltip.init(legend)
+  const tip = tooltip.init(legend)
 
   legend.selectAll('div:not([class=d3-tip]')
     .data(categories).join('div')
@@ -13,7 +13,7 @@ export function init (categories) {
       const target = d3.select(event.target)
       const selections = legend.selectAll('[class*=selection]')
 
-      var targetIndex = 0
+      let targetIndex = 0
       selections.each((category, index) => {
         if (category.selectionId === target.data()[0].selectionId) {
           targetIndex = index

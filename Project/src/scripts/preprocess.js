@@ -31,8 +31,8 @@ export class DataHandler {
    * @param {string[]} attributesNames The names of all selected attributes
    */
   getCategoryData (timeRange, attributesNames) {
-    var categories = new Map()
-    var contracts = this.data.filter(contract => {
+    const categories = new Map()
+    const contracts = this.data.filter(contract => {
       return !timeRange || (contract.Date >= timeRange.startDate && contract.Date <= timeRange.endDate)
     })
 
@@ -41,7 +41,7 @@ export class DataHandler {
         return [attributeName, contract[attributeName]]
       })))
 
-      var category = categories.get(categoryKey) || {}
+      const category = categories.get(categoryKey) || {}
       category.numberOfContracts = (category.numberOfContracts || 0) + 1
       category.totalFinancing = (category.totalFinancing || 0.0) + contract['Final Value']
       category.contracts = (category.contracts || []).concat(contract)

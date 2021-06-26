@@ -30,7 +30,7 @@ export function registerEvolutionButtons (viz1, viz3) {
 }
 
 export function update (categories, timedCategories, xScale, yScale, tip, onCircleClick) {
-  var svg = d3.select('#graph-1-g')
+  const svg = d3.select('#graph-1-g')
 
   categories = Array.from(categories.entries())
   svg.selectAll('.currTimeCircle')
@@ -55,8 +55,8 @@ export function update (categories, timedCategories, xScale, yScale, tip, onCirc
   timedCategories = Array.from(timedCategories.entries())
   timedCategories.forEach(categories => {
     categories = categories[1].map(category => [categories[0], category])
-    var prevTimedCategories = categories.slice(1)
-    var currTimedCategory = categories[0]
+    const prevTimedCategories = categories.slice(1)
+    const currTimedCategory = categories[0]
 
     svg.selectAll('line.line' + currTimedCategory[1].selectionId)
       .data(prevTimedCategories).join(
@@ -110,7 +110,7 @@ export function update (categories, timedCategories, xScale, yScale, tip, onCirc
 }
 
 export function updateFromSelection (event, selectionId, isSelected) {
-  var circle = d3.select(event.target)
+  const circle = d3.select(event.target)
   if (isSelected) {
     circle.classed('selection' + selectionId, true)
   } else {
@@ -131,5 +131,5 @@ export function selectFirst () {
 }
 
 export function updateFromZoom (xScale, yScale) {
-  console.log(xScale, yScale)
+  // Not implemented
 }

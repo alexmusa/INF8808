@@ -54,20 +54,20 @@ export default class Viz1 {
 
   // This method is called whenever the user changes their selection
   updateTimeRange () {
-    var categories = this.getCategories()
+    const categories = this.getCategories()
 
     this.timedCategories.forEach((timedCategories, categoryKey) => {
-      var lastTimedCategory = timedCategories[0]
+      const lastTimedCategory = timedCategories[0]
       timedCategories.unshift(lastTimedCategory)
 
-      var category = categories.get(categoryKey)
+      const category = categories.get(categoryKey)
       category.period = this.slider.range
       category.selectionId = lastTimedCategory.selectionId
       timedCategories[0] = category
     })
 
-    var timedCategories = Array.from(this.timedCategories.values())
-    var allCategories = Array.from(categories.values()).concat([].concat(...timedCategories))
+    const timedCategories = Array.from(this.timedCategories.values())
+    const allCategories = Array.from(categories.values()).concat([].concat(...timedCategories))
 
     this.xScale = scales.setXScale(this.graphSize.width, allCategories)
     this.yScale = scales.setYScale(this.graphSize.height, allCategories)
@@ -87,7 +87,7 @@ export default class Viz1 {
     this.availSelectionIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     this.timedCategories = new Map()
 
-    var catValues = Array.from(categories.values())
+    const catValues = Array.from(categories.values())
     this.xScale = scales.setXScale(this.graphSize.width, catValues)
     this.yScale = scales.setYScale(this.graphSize.height, catValues)
 
