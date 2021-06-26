@@ -1,9 +1,19 @@
+
+/**
+ * This class is responsible for displaying the slider and handling all interactions with the scatter plot.
+ */
 export class Slider {
   constructor () {
     this.range = undefined
     this.ticksCount = 12
   }
 
+  /**
+   * Extracts all dates (sorted in an ascending order) for all contracts from the given categories.
+   * 
+   * @param {object[]} categories All available categories
+   * @returns {Date[]} All available dates
+   */
   getAllDates (categories) {
     const dates = new Set()
     categories.forEach(category => {
@@ -12,6 +22,13 @@ export class Slider {
     return Array.from(dates).sort((date1, date2) => date1 - date2)
   }
 
+  /**
+   * Initializes the slider.
+   * 
+   * @param {number} width The canvas width
+   * @param {object[]} categories All available categories
+   * @param {Function} onNewRangeSelected The function to call when the slider range is changed by the user
+   */
   init (width, categories, onNewRangeSelected) {
     const dates = this.getAllDates(categories)
     this.range = { startDate: d3.min(dates), endDate: d3.max(dates) }
@@ -58,6 +75,11 @@ export class Slider {
     )
   }
 
+  /**
+   * Updates the displayed selected dates on the slider.
+   * 
+   * @param {Date[]} value The 2 dates to display
+   */
   updateValue (value) {
     d3.select('p#time-value').text(value.map(v => new Date(v))
       .map(d3.timeFormat('%Y %B %d'))

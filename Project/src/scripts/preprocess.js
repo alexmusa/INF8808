@@ -1,5 +1,8 @@
 import cleanUpData from './cleanup'
 
+/**
+ * This class is responsible for parsing the dataset, and holding all the contracts during a session.
+ */
 export class DataHandler {
   constructor (data) {
     this.data = cleanUpData(data)
@@ -11,6 +14,13 @@ export class DataHandler {
     })
   }
 
+  /**
+   * Computes all possible values for a given attribute.
+   * Ex: For `Language`, possible values may be: `French` and `English`.
+   * 
+   * @param {*} attributeName 
+   * @returns {object[]} All possible values for the given attribute name
+   */
   getAll (attributeName) {
     return [...this.data.reduce((acc, curr) => {
       acc.add(curr[attributeName])
@@ -24,11 +34,11 @@ export class DataHandler {
    *   numberOfContracts: 1,
    *   totalFinancing: 10,
    *   contracts: [...],
-   *   }
+   *  }
    *
-   * @returns {object[]} an Map of categories for all combinations of 'attributesNames' in the 'timeRange'
-   * @param {number} timeRange The time range to find categories
+   * @param {object} timeRange The time range in which the categories should be found
    * @param {string[]} attributesNames The names of all selected attributes
+   * @returns {Map} A Map of categories for all combinations of 'attributesNames' in the 'timeRange'
    */
   getCategoryData (timeRange, attributesNames) {
     const categories = new Map()

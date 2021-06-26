@@ -1,4 +1,6 @@
 /**
+ * Updates the table according to the given category.
+ * 
  * @param {object} category The category being processed
  */
 export function update (category) {
@@ -12,6 +14,8 @@ export function update (category) {
 }
 
 /**
+ * Shows the title of the table.
+ * 
  * @param {object} category The category being processed
  */
 function showTitle (category) {
@@ -42,29 +46,31 @@ function showTitle (category) {
 }
 
 /**
- *  Removes the table
+ *  Removes the table.
  */
 function clearTable () {
   d3.select('#table').select('table').remove()
 }
 
 /**
- * @param {string[]} attributes All attributes to display in the table header
- * @param {string[][]} rows All rows corresponding to the attributes
+ * Draws the entire table.
+ * 
+ * @param {string[]} attributes All attributes to display in the table header.
+ * @param {string[][]} rows All rows corresponding to the attributes.
  */
 function drawTable (attributes, rows) {
-  // table
+  // Append the table
   const table = d3.select('#table')
     .append('table')
 
-  // headers
+  // Add the headers
   table.append('thead').append('tr')
     .selectAll('th')
     .data(attributes)
     .enter().append('th')
     .text(d => d)
 
-  // data
+  // Add the data (columns and rows)
   table.append('tbody')
     .selectAll('tr').data(rows)
     .enter().append('tr')

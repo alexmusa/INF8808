@@ -1,5 +1,10 @@
 import * as tooltip from './tooltip.js'
 
+/**
+ * Generates the legend for the line chart.
+ * 
+ * @param {Map} categories All available categories
+ */
 export function init (categories) {
   const legend = d3.select('#lc-legend')
   legend.selectAll('div:not([class=d3-tip]').remove()

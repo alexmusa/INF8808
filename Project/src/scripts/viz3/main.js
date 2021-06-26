@@ -4,6 +4,10 @@ import * as viz from './viz'
 import Slider from './slider.js'
 import * as legend from './legend.js'
 
+/**
+ * This class represents the line chart.
+ * It is responsible for displaying the evolution of the total financing for a given set of categories.
+ */
 export default class Viz3 {
   constructor () {
     // Initialize members
@@ -22,6 +26,9 @@ export default class Viz3 {
     viz.positionLabels(g, this.graphSize.width, this.graphSize.height)
   }
 
+  /**
+   * Sets the dimensions of the chart.
+   */
   setSizing () {
     this.graphSize = {
       width: this.svgSize.width - this.margin.right - this.margin.left,
@@ -30,6 +37,11 @@ export default class Viz3 {
     helper.setCanvasSize(this.svgSize.width, this.svgSize.height)
   }
 
+  /**
+   * Initializes the chart.
+   * 
+   * @param {Map} categoriesMap All categories to display
+   */
   init (categoriesMap) {
     this.categories = this.extractCategories(categoriesMap)
     this.update(this.categories)
@@ -37,11 +49,17 @@ export default class Viz3 {
     legend.init(this.categories)
   }
 
+  /**
+   * Computes the total financing evlotion for each category.
+   * 
+   * @param {Map} categoriesMap All categories to display
+   * @returns {object[]} The total financing evolution for the given categories
+   */
   extractCategories (categoriesMap) {
     const categories = [] // [{label, date, totalFinancing}, ...]
 
     categoriesMap.forEach(categoryData => {
-      // Sort contracts by date. TODO: check if this is really necessary.
+      // Sort contracts by date.
       const contracts = categoryData[1][0].contracts
       contracts.sort((a, b) => a.Date - b.Date)
 
@@ -63,6 +81,13 @@ export default class Viz3 {
     return categories
   }
 
+  /**
+   * Filters out categories that are out of the given range.
+   * 
+   * @param {object[]} categories All categories to filter
+   * @param {object} range The range within which the resulting categories should be
+   * @returns {object[]} All categories that fit in the given range
+   */
   getCategoriesInRange (categories, range) {
     const categoriesInRange = []
     categories.forEach(c => {
@@ -75,7 +100,13 @@ export default class Viz3 {
     return categoriesInRange
   }
 
-  // This method is called whenever the user changes their selection
+  /**
+   * Updates the line chart.
+   * This method is called whenever the user changes their selection.
+   * 
+   * @param {object[]} categories All categories to display
+   * @param {object} range The range within which all displayed categories should be
+   */
   update (categories, range) {
     if (range) categories = this.getCategoriesInRange(categories, range)
 
@@ -85,10 +116,21 @@ export default class Viz3 {
     viz.update(this.g, categories, this.xScale, this.yScale, this.tip)
   }
 
+  /**
+   * This method is called whenever the slider range is changed by the user.
+   * 
+   * @param {object} range The range within which all displayed categories should be
+   */
   updateFromSlider (range) {
     this.update(this.categories, range)
   }
 
+  /**
+   * Enables the history button according to the user times category selection.
+   * This method is called whenever an attribute is selected/de-selected by the user.
+   * 
+   * @param {boolean} timedCategoriesSelected True if at least 1 timed category is selected.
+   */
   onCategorySelection (timedCategoriesSelected) {
     d3.select('#history-btn').attr('disabled', timedCategoriesSelected ? null : 'true')
   }

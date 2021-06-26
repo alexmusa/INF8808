@@ -1,5 +1,8 @@
 /**
- * @param margin
+ * Generates the group that contains the chart.
+ * 
+ * @param {object} margin The line chart margin
+ * @returns {*} The generated svg group
  */
 export function generateG (margin) {
   return d3.select('.graph-3')
@@ -11,8 +14,10 @@ export function generateG (margin) {
 }
 
 /**
- * @param width
- * @param height
+ * Sets the canvas dimensions.
+ * 
+ * @param {number} width The canvas width
+ * @param {number} height The canvas height
  */
 export function setCanvasSize (width, height) {
   d3.select('#line-chart')
@@ -21,7 +26,9 @@ export function setCanvasSize (width, height) {
 }
 
 /**
- * @param g
+ * Adds the axes.
+ * 
+ * @param {*} g The svg group that contains the chart
  */
 export function appendAxes (g) {
   g.append('g')
@@ -31,7 +38,9 @@ export function appendAxes (g) {
 }
 
 /**
- * @param g
+ * Adds the graph labels.
+ * 
+ * @param {*} g The svg group that contains the chart
  */
 export function appendGraphLabels (g) {
   g.append('text')
@@ -47,10 +56,12 @@ export function appendGraphLabels (g) {
 }
 
 /**
- * @param g
- * @param xScale
- * @param yScale
- * @param height
+ * Draws both X and Y axis.
+ * 
+ * @param {*} g The svg group that contains the chart
+ * @param {*} xScale The d3 Scales to use on the X axis
+ * @param {*} yScale The d3 Scales to use on the Y axis
+ * @param {number} height The canvas height
  */
 export function drawAxis (g, xScale, yScale, height) {
   g.select('.x.axis')

@@ -1,6 +1,8 @@
 /**
- * @param width
- * @param categories
+ * Initializes the X scales
+ * 
+ * @param {number} width The canvas width
+ * @param {object[]} categories All categories to display
  */
 export function setXScale (width, categories) {
   const minAccessor = category => category.contracts[0]?.date
@@ -11,8 +13,10 @@ export function setXScale (width, categories) {
 }
 
 /**
- * @param height
- * @param categories
+ * Initializes the Y scales
+ * 
+ * @param {number} height The canvas height
+ * @param {object[]} categories All categories to display
  */
 export function setYScale (height, categories) {
   const minAccessor = category => category.contracts[0]?.totalFinancing

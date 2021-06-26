@@ -1,9 +1,23 @@
+
+/**
+ * This class handles all the checkboxes.
+ * It is responsible for:
+ * - displaying the checkboxes
+ * - holding the current user selection
+ * - registering all checkboxes events
+ */
 export class CheckBoxesHandler {
   constructor () {
     this.selectedBoxes = ['Language'] // Attributes currently selected by the user
     CheckBoxesHandler.selectedAttributes = new Map()
   }
 
+  /**
+   * Draws the checkboxes and binds all needed events.
+   * 
+   * @param {Map} attributes A map of all available attributes
+   * @param {Function} onSelectionChange The function to call when a checkbox is selected
+   */
   setCheckboxes (attributes, onSelectionChange) {
     const attr = [...attributes.entries()]
       .filter(att => !['Period', 'Title', 'Date', 'Final Value', 'Original Value', 'Comments'].includes(att[0]))
@@ -26,11 +40,23 @@ export class CheckBoxesHandler {
     this.setDropdowns(attr, onSelectionChange)
   }
 
+  /**
+   * Updates the current user selecion model.
+   * 
+   * @param {string} attrName The name of the attribute whose selection is being changed
+   * @param {boolean} selected True if the attribute is selected
+   */
   updateSelection (attrName, selected) {
     if (!selected) this.selectedBoxes.splice(this.selectedBoxes.indexOf(attrName), 1)
     else this.selectedBoxes.push(attrName)
   }
 
+  /**
+   * Creates the dropdowns that contain the attributes options.
+   * 
+   * @param {Map} attributes A map of all available attributes
+   * @param {Function} onSelectionChange The function to call when an option is selected
+   */
   setDropdowns (attributes, onSelectionChange) {
     this.fillAttributes(attributes)
 
@@ -44,12 +70,22 @@ export class CheckBoxesHandler {
     this.registerDropdownsDisplay()
   }
 
+  /**
+   * Fills the current options selection model with the available attributes.
+   * 
+   * @param {Map} attributes A map of all available attributes
+   */
   fillAttributes (attributes) {
     attributes.forEach(attr => {
       CheckBoxesHandler.selectedAttributes.set(attr[0], new Set(attr[1]))
     })
   }
 
+  /**
+   * Creates a container for the dropdowns.
+   * 
+   * @returns {*} A d3 selecion of the container
+   */
   getDropDownContainer () {
     return d3.selectAll('.checkbox')
       .insert('div', ':first-child')
@@ -57,6 +93,11 @@ export class CheckBoxesHandler {
       .style('display', 'inline-block')
   }
 
+  /**
+   * Creates the icons for all available attributes.
+   * 
+   * @param {*} container The d3 Selection of the drop down container
+   */
   setDropDownIcon (container) {
     container.append('span')
       .attr('id', (d) => d[0])
@@ -70,12 +111,24 @@ export class CheckBoxesHandler {
       })
   }
 
+  /**
+   * Creates the dropdown menu for each attribute.
+   * 
+   * @param {*} container The d3 Selection of the drop down container
+   * @returns {*} A d3 selecion of the drop down menus
+   */
   setDropDownMenu (container) {
     return container.append('ul')
       .attr('class', 'dropdown-menu')
       .attr('aria-labelledby', (d) => d[0])
   }
 
+  /**
+   * Creates the options that allow the user to select or de-select every other option.
+   * 
+   * @param {*} dropdownMenu The d3 Selection of the drop down menus
+   * @param {Function} onSelectionChange The function to call when an option is selected
+   */
   setAllChecksOptions (dropdownMenu, onSelectionChange) {
     const options = [{ text: 'Check all', checkAll: true }, { text: 'Uncheck all', checkAll: false }]
     options.forEach(opt => {
@@ -99,6 +152,12 @@ export class CheckBoxesHandler {
     })
   }
 
+  /**
+   * Creates all available options for each attribute.
+   * 
+   * @param {*} dropdownMenu The d3 Selection of the drop down menu
+   * @param {Function} onSelectionChange The function to call when an option is selected
+   */
   setAllOptions (dropdownMenu, onSelectionChange) {
     dropdownMenu.datum(function (d) {
       d[1].forEach(option => {
@@ -123,6 +182,9 @@ export class CheckBoxesHandler {
     })
   }
 
+  /**
+   * Registers an event that enables/disables the drop down icon based on the attribute selection.
+   */
   registerDropdownsDisplay () {
     d3.selectAll('.attr-checkbox')
       .on('change.forDropdown', function (e) {
@@ -132,6 +194,11 @@ export class CheckBoxesHandler {
       })
   }
 
+  /**
+   * Filters out all the categories that have not been selected by the user.
+   * 
+   * @param {Map} categories A map of all available categories
+   */
   filterByAttributesSelection (categories) {
     if (!CheckBoxesHandler.selectedAttributes.size) return categories
 

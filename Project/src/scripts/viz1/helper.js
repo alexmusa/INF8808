@@ -1,3 +1,9 @@
+/**
+ * Generates the group that contains the plot.
+ * 
+ * @param {object} margin The line chart margin
+ * @returns {*} The generated svg group
+ */
 export function generateG (margin) {
   return d3.select('.graph-1')
     .select('svg')
@@ -7,6 +13,12 @@ export function generateG (margin) {
       'translate(' + margin.left + ',' + margin.top + ')')
 }
 
+/**
+ * Sets the canvas dimensions.
+ * 
+ * @param {number} width The canvas width
+ * @param {number} height The canvas height
+ */
 export function setCanvasSize (width, height) {
   d3.select('#scatter-plot')
     .attr('width', width)
@@ -14,7 +26,9 @@ export function setCanvasSize (width, height) {
 }
 
 /**
- * @param g
+ * Adds the axes.
+ * 
+ * @param {*} g The svg group that contains the plot
  */
 export function appendAxes (g) {
   g.append('g')
@@ -23,6 +37,11 @@ export function appendAxes (g) {
     .attr('class', 'y axis')
 }
 
+/**
+ * Adds the graph labels.
+ * 
+ * @param {*} g The svg group that contains the chart
+ */
 export function appendGraphLabels (g) {
   g.append('text')
     .text('Financing')
@@ -36,6 +55,13 @@ export function appendGraphLabels (g) {
     .attr('font-size', 12)
 }
 
+/**
+ * Draws both X and Y axis.
+ * 
+ * @param {*} xScale The d3 Scales to use on the X axis
+ * @param {*} yScale The d3 Scales to use on the Y axis
+ * @param {number} height The canvas height
+ */
 export function drawAxis (xScale, yScale, height) {
   d3.select('.x.axis')
     .transition().duration(1000)

@@ -1,3 +1,10 @@
+
+/**
+ * Updates the interface when the user selects/de-selects a new category.
+ * 
+ * @param {*} selectionId The id of the category whose selection has changed
+ * @param {boolean} isSelected True if the category has been selected
+ */
 export function updateFromSelection (selectionId, isSelected) {
   const legend = d3.select('#sp-legend')
 
@@ -31,6 +38,11 @@ export function updateFromSelection (selectionId, isSelected) {
   }
 }
 
+/**
+ * Cancels all categories selections whenever the user clicks the reset button.
+ * 
+ * @param {*} event The event fired by the reset
+ */
 export function onResetSelection (event) {
   const legend = d3.select('#sp-legend')
 
@@ -42,6 +54,11 @@ export function onResetSelection (event) {
     .filter('[class*=selection]').dispatch('click')
 }
 
+/**
+ * Adds a category to the selections whenever the user selects a category
+ * 
+ * @param {*} event The event fired by the click
+ */
 export function onClickSelection (event) {
   d3.select('#graph-1-g')
     .selectAll('.currTimeCircle')

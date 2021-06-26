@@ -5,6 +5,10 @@ import * as tooltip from './tooltip.js'
 import * as legend from './legend.js'
 import * as sliders from './sliders.js'
 
+/**
+ * This class represents the scatter plot.
+ * It is responsible for displaying the categories that correspond to the current user selecions.
+ */
 export default class Viz1 {
   constructor (dataHandler, checkBoxesHandler, viz2, viz3) {
     // Initialize members
@@ -44,6 +48,9 @@ export default class Viz1 {
     viz.selectFirst()
   }
 
+  /**
+   * Sets the dimensions of the plot.
+   */
   setSizing () {
     this.graphSize = {
       width: this.svgSize.width - this.margin.right - this.margin.left,
@@ -52,7 +59,10 @@ export default class Viz1 {
     helper.setCanvasSize(this.svgSize.width, this.svgSize.height)
   }
 
-  // This method is called whenever the user changes their selection
+  /**
+   * Udpates the scatter to fit a new time range.
+   * This method is called whenever the user changes their time range selection on the slider.
+   */
   updateTimeRange () {
     const categories = this.getCategories()
 
@@ -78,7 +88,12 @@ export default class Viz1 {
       this.xScale, this.yScale, this.tip, this.onCircleClick)
   }
 
-  // This method is called whenever the user changes his attributes selection
+  /**
+   * Updates the scatter plot.
+   * This method is called whenever the user changes his attributes selection.
+   * 
+   * @param {Map} categories All categories to display
+   */
   update (categories) {
     if (!categories) categories = this.getCategories()
 
@@ -99,10 +114,21 @@ export default class Viz1 {
     this.viz3.onCategorySelection(this.timedCategories.size > 0)
   }
 
+  /**
+   * Computes the categories that correspond to the current user selections.
+   * 
+   * @returns {Map} The corresponding categories
+   */
   getCategories () {
     return this.dataHandler.getCategoryData(this.slider.range, this.checkBoxesHandler.selectedBoxes)
   }
 
+  /**
+   * Registers a category when the user clicks the corresponding circle and updates history button accordingly.
+   * 
+   * @param {*} event The event fired by the selecion
+   * @param {*} category The category whose circle was clicked
+   */
   onCategoryClick (event, category) {
     const categoryKey = category[0]
     category = category[1]
@@ -137,6 +163,11 @@ export default class Viz1 {
   }
 }
 
+
+/**
+ * This class is responsible for detecting whether the user is performing
+ * a single click or a double click on a category circle.
+ */
 class ClickHandler {
   constructor (doClickAction, doDoubleClickAction) {
     this.timer = 0
@@ -147,6 +178,12 @@ class ClickHandler {
     this.doDoubleClickAction = doDoubleClickAction
   }
 
+  /**
+   * Executes the click action handler that corresponds to the detected click type.
+   * 
+   * @param {*} event The event fired by the click
+   * @param {*} ob A parameter to pass to the click actions handlers
+   */
   onClick (event, ob) {
     if (event.detail === null) {
       this.doClickAction(event, ob)

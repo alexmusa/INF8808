@@ -1,6 +1,12 @@
 import * as helper from './helper'
 import d3Tip from 'd3-tip'
 
+/**
+ * Computes the content to display on the tooltip (while the user hovers a category).
+ * 
+ * @param {*} category The category being hovered
+ * @returns {*} The tooltip content
+ */
 export function getContents (category) {
   const content = d3.create()
 
@@ -50,6 +56,12 @@ export function getContents (category) {
   return content.html()
 }
 
+/**
+ * Initializes the tooltip.
+ * 
+ * @param {*} margin The canvas margins
+ * @returns {object} The resulting svg group with the tooltip
+ */
 export function init (margin) {
   const g = helper.generateG(margin)
   const tip = d3Tip().attr('class', 'd3-tip').html(function (event, data) { return getContents(data) })

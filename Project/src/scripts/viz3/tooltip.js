@@ -1,3 +1,10 @@
+
+/**
+ * Computes the content to display on the tooltip (while the user hovers a category legend).
+ * 
+ * @param {*} category The category being hovered
+ * @returns {*} The tooltip content
+ */
 export function getContents (category) {
   const content = d3.create()
 
@@ -15,6 +22,12 @@ export function getContents (category) {
   return content.html()
 }
 
+/**
+ * Initializes the tooltip.
+ * 
+ * @param {*} parent The tooltip container
+ * @returns {*} A d3 Selection of the tooltip
+ */
 export function init (parent) {
   return parent.append('div')
     .attr('class', 'd3-tip')

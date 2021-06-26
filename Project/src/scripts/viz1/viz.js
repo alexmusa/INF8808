@@ -1,3 +1,11 @@
+
+/**
+ * Positions the axis labels.
+ * 
+ * @param {*} g A d3 Selection of the main svg group
+ * @param {number} width The canvas width
+ * @param {number} height The canvas height
+ */
 export function positionLabels (g, width, height) {
   g.selectAll('.y.axis-text')
     .attr('x', -50)
@@ -8,12 +16,27 @@ export function positionLabels (g, width, height) {
     .attr('y', height + 50)
 }
 
+/**
+ * Initializes the scatter plot labels and registers mouse events.
+ * 
+ * @param {*} g A d3 Selection of the main svg group
+ * @param {number} width The canvas width
+ * @param {number} height The canvas height
+ * @param {Function} onMouseMove The function to call when the mouse mouves on the scatter plot
+ * @param {Function} onScroll The function to call when the user scrolls on the window
+ */
 export function init (g, width, height, onMouseMove, onScroll) {
   positionLabels(g, width, height)
   d3.select('#scatter-plot').on('mousemove', onMouseMove)
   d3.select(window).on('scroll', onScroll)
 }
 
+/**
+ * Registers the events responsible for the transitions between the scatter plot (viz1) and the line chart (viz2)
+ * 
+ * @param {*} viz1 The scatter plot
+ * @param {*} viz3 The line chart
+ */
 export function registerEvolutionButtons (viz1, viz3) {
   const historyBtn = d3.select('#history-btn')
   const catBtn = d3.select('#categories-btn')
@@ -29,6 +52,16 @@ export function registerEvolutionButtons (viz1, viz3) {
   })
 }
 
+/**
+ * Updates the displayed categories on the scatter plot.
+ * 
+ * @param {Map} categories The categories to display
+ * @param {Map} timedCategories The categories selected by the user (for the lines tracing)
+ * @param {*} xScale The d3 Scale to use on the X axis
+ * @param {*} yScale The d3 Scale to use on the Y axis
+ * @param {*} tip The d3 Tip to use when the user hovers a category
+ * @param {Function} onCircleClick The function to call when the user clicks on a category
+ */
 export function update (categories, timedCategories, xScale, yScale, tip, onCircleClick) {
   const svg = d3.select('#graph-1-g')
 
@@ -109,6 +142,13 @@ export function update (categories, timedCategories, xScale, yScale, tip, onCirc
   svg.selectAll('circle').raise()
 }
 
+/**
+ * Updates the circle representing a category upon selecion.
+ * 
+ * @param {*} event The event fired by the selection
+ * @param {*} selectionId The id of the category whose selection has changed
+ * @param {boolean} isSelected True if the category has been selected
+ */
 export function updateFromSelection (event, selectionId, isSelected) {
   const circle = d3.select(event.target)
   if (isSelected) {
@@ -126,6 +166,9 @@ export function updateFromSelection (event, selectionId, isSelected) {
   }
 }
 
+/**
+ * Selects the first circle.
+ */
 export function selectFirst () {
   d3.select('#graph-1-g').select('circle').dispatch('click')
 }
