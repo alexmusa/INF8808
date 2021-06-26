@@ -91,7 +91,7 @@ export default class Viz1 {
   /**
    * Updates the scatter plot.
    * This method is called whenever the user changes his attributes selection.
-   * 
+   *
    * @param {Map} categories All categories to display
    */
   update (categories) {
@@ -116,7 +116,7 @@ export default class Viz1 {
 
   /**
    * Computes the categories that correspond to the current user selections.
-   * 
+   *
    * @returns {Map} The corresponding categories
    */
   getCategories () {
@@ -125,7 +125,7 @@ export default class Viz1 {
 
   /**
    * Registers a category when the user clicks the corresponding circle and updates history button accordingly.
-   * 
+   *
    * @param {*} event The event fired by the selecion
    * @param {*} category The category whose circle was clicked
    */
@@ -163,7 +163,6 @@ export default class Viz1 {
   }
 }
 
-
 /**
  * This class is responsible for detecting whether the user is performing
  * a single click or a double click on a category circle.
@@ -180,7 +179,7 @@ class ClickHandler {
 
   /**
    * Executes the click action handler that corresponds to the detected click type.
-   * 
+   *
    * @param {*} event The event fired by the click
    * @param {*} ob A parameter to pass to the click actions handlers
    */

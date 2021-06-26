@@ -3,7 +3,7 @@
  * - removing contracts with missing information
  * - parsing numbers and dates
  * - fixing illegal characters
- * 
+ *
  * @param {object[]} data The initial (raw) data
  * @returns {object[]} The clean data
  */
@@ -82,7 +82,7 @@ function labelOlderContractsVersions (data, d) {
 
 /**
  * Finds all instances of the given contract.
- * 
+ *
  * @param {object[]} data The data being processed
  * @param {object} d A contract
  * @returns {number[]} Indexes of all contracts matching the contract
@@ -97,7 +97,7 @@ function findAllOtherInstancesIndexes (data, d) {
 
 /**
  * Sorts the contracts by date.
- * 
+ *
  * @param {object[]} data The data being processed
  * @param {number[]} indexes Contracts indexes
  * @returns {number[]} The sorted indexes
@@ -108,7 +108,7 @@ function sortInstancesByDate (data, indexes) {
 
 /**
  * Checks whether two contracts can be considered equivalent.
- * 
+ *
  * @param {object} d A reference contract
  * @param {object} otherInstance Another contract that is a potential match
  * @returns {boolean} Whether the two instances are equivalent

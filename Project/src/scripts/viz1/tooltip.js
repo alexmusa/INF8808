@@ -3,7 +3,7 @@ import d3Tip from 'd3-tip'
 
 /**
  * Computes the content to display on the tooltip (while the user hovers a category).
- * 
+ *
  * @param {*} category The category being hovered
  * @returns {*} The tooltip content
  */
@@ -58,7 +58,7 @@ export function getContents (category) {
 
 /**
  * Initializes the tooltip.
- * 
+ *
  * @param {*} margin The canvas margins
  * @returns {object} The resulting svg group with the tooltip
  */

@@ -14,7 +14,7 @@ export class CheckBoxesHandler {
 
   /**
    * Draws the checkboxes and binds all needed events.
-   * 
+   *
    * @param {Map} attributes A map of all available attributes
    * @param {Function} onSelectionChange The function to call when a checkbox is selected
    */
@@ -42,7 +42,7 @@ export class CheckBoxesHandler {
 
   /**
    * Updates the current user selecion model.
-   * 
+   *
    * @param {string} attrName The name of the attribute whose selection is being changed
    * @param {boolean} selected True if the attribute is selected
    */
@@ -53,7 +53,7 @@ export class CheckBoxesHandler {
 
   /**
    * Creates the dropdowns that contain the attributes options.
-   * 
+   *
    * @param {Map} attributes A map of all available attributes
    * @param {Function} onSelectionChange The function to call when an option is selected
    */
@@ -72,7 +72,7 @@ export class CheckBoxesHandler {
 
   /**
    * Fills the current options selection model with the available attributes.
-   * 
+   *
    * @param {Map} attributes A map of all available attributes
    */
   fillAttributes (attributes) {
@@ -83,7 +83,7 @@ export class CheckBoxesHandler {
 
   /**
    * Creates a container for the dropdowns.
-   * 
+   *
    * @returns {*} A d3 selecion of the container
    */
   getDropDownContainer () {
@@ -95,7 +95,7 @@ export class CheckBoxesHandler {
 
   /**
    * Creates the icons for all available attributes.
-   * 
+   *
    * @param {*} container The d3 Selection of the drop down container
    */
   setDropDownIcon (container) {
@@ -113,7 +113,7 @@ export class CheckBoxesHandler {
 
   /**
    * Creates the dropdown menu for each attribute.
-   * 
+   *
    * @param {*} container The d3 Selection of the drop down container
    * @returns {*} A d3 selecion of the drop down menus
    */
@@ -125,7 +125,7 @@ export class CheckBoxesHandler {
 
   /**
    * Creates the options that allow the user to select or de-select every other option.
-   * 
+   *
    * @param {*} dropdownMenu The d3 Selection of the drop down menus
    * @param {Function} onSelectionChange The function to call when an option is selected
    */
@@ -154,7 +154,7 @@ export class CheckBoxesHandler {
 
   /**
    * Creates all available options for each attribute.
-   * 
+   *
    * @param {*} dropdownMenu The d3 Selection of the drop down menu
    * @param {Function} onSelectionChange The function to call when an option is selected
    */
@@ -196,11 +196,11 @@ export class CheckBoxesHandler {
 
   /**
    * Filters out all the categories that have not been selected by the user.
-   * 
+   *
    * @param {Map} categories A map of all available categories
    */
   filterByAttributesSelection (categories) {
-    if (!CheckBoxesHandler.selectedAttributes.size) return categories
+    if (!CheckBoxesHandler.selectedAttributes.size) return
 
     for (const c of categories.keys()) {
       const attributes = JSON.parse(c)

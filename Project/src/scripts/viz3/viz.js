@@ -1,6 +1,6 @@
 /**
  * Positions the axis labels.
- * 
+ *
  * @param {*} g A d3 Selection of the main svg group
  * @param {number} width The canvas width
  * @param {number} height The canvas height
@@ -17,7 +17,7 @@ export function positionLabels (g, width, height) {
 
 /**
  * Updates the displayed lines on the line chart.
- * 
+ *
  * @param {*} g A d3 Selection of the main svg group
  * @param {object[]} categories The categories to display
  * @param {*} xScale The d3 Scale to use on the X axis

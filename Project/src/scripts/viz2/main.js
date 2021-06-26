@@ -2,7 +2,7 @@ import * as viz from './viz'
 
 /**
  * This class represents the table.
- * It is responsible for displaying all the details of the contracts under a given category. 
+ * It is responsible for displaying all the details of the contracts under a given category.
  */
 export default class Viz2 {
   constructor (dataHandler, checkBoxesHandler) {
@@ -12,7 +12,7 @@ export default class Viz2 {
 
   /**
    * This method is called whenever the user changes their selection
-   * 
+   *
    * @param {object} category The category to display in the table
    */
   update (category) {

@@ -39,7 +39,7 @@ export default class Viz3 {
 
   /**
    * Initializes the chart.
-   * 
+   *
    * @param {Map} categoriesMap All categories to display
    */
   init (categoriesMap) {
@@ -51,7 +51,7 @@ export default class Viz3 {
 
   /**
    * Computes the total financing evlotion for each category.
-   * 
+   *
    * @param {Map} categoriesMap All categories to display
    * @returns {object[]} The total financing evolution for the given categories
    */
@@ -83,7 +83,7 @@ export default class Viz3 {
 
   /**
    * Filters out categories that are out of the given range.
-   * 
+   *
    * @param {object[]} categories All categories to filter
    * @param {object} range The range within which the resulting categories should be
    * @returns {object[]} All categories that fit in the given range
@@ -103,7 +103,7 @@ export default class Viz3 {
   /**
    * Updates the line chart.
    * This method is called whenever the user changes their selection.
-   * 
+   *
    * @param {object[]} categories All categories to display
    * @param {object} range The range within which all displayed categories should be
    */
@@ -118,7 +118,7 @@ export default class Viz3 {
 
   /**
    * This method is called whenever the slider range is changed by the user.
-   * 
+   *
    * @param {object} range The range within which all displayed categories should be
    */
   updateFromSlider (range) {
@@ -128,7 +128,7 @@ export default class Viz3 {
   /**
    * Enables the history button according to the user times category selection.
    * This method is called whenever an attribute is selected/de-selected by the user.
-   * 
+   *
    * @param {boolean} timedCategoriesSelected True if at least 1 timed category is selected.
    */
   onCategorySelection (timedCategoriesSelected) {

@@ -1,7 +1,7 @@
 
 /**
  * Updates the interface when the user selects/de-selects a new category.
- * 
+ *
  * @param {*} selectionId The id of the category whose selection has changed
  * @param {boolean} isSelected True if the category has been selected
  */
@@ -40,7 +40,7 @@ export function updateFromSelection (selectionId, isSelected) {
 
 /**
  * Cancels all categories selections whenever the user clicks the reset button.
- * 
+ *
  * @param {*} event The event fired by the reset
  */
 export function onResetSelection (event) {
@@ -56,7 +56,7 @@ export function onResetSelection (event) {
 
 /**
  * Adds a category to the selections whenever the user selects a category
- * 
+ *
  * @param {*} event The event fired by the click
  */
 export function onClickSelection (event) {

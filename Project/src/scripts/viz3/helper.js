@@ -1,6 +1,6 @@
 /**
  * Generates the group that contains the chart.
- * 
+ *
  * @param {object} margin The line chart margin
  * @returns {*} The generated svg group
  */
@@ -15,7 +15,7 @@ export function generateG (margin) {
 
 /**
  * Sets the canvas dimensions.
- * 
+ *
  * @param {number} width The canvas width
  * @param {number} height The canvas height
  */
@@ -27,7 +27,7 @@ export function setCanvasSize (width, height) {
 
 /**
  * Adds the axes.
- * 
+ *
  * @param {*} g The svg group that contains the chart
  */
 export function appendAxes (g) {
@@ -39,7 +39,7 @@ export function appendAxes (g) {
 
 /**
  * Adds the graph labels.
- * 
+ *
  * @param {*} g The svg group that contains the chart
  */
 export function appendGraphLabels (g) {
@@ -57,7 +57,7 @@ export function appendGraphLabels (g) {
 
 /**
  * Draws both X and Y axis.
- * 
+ *
  * @param {*} g The svg group that contains the chart
  * @param {*} xScale The d3 Scales to use on the X axis
  * @param {*} yScale The d3 Scales to use on the Y axis

@@ -10,7 +10,7 @@ export class Slider {
 
   /**
    * Extracts all dates (sorted in an ascending order) for all contracts from the given categories.
-   * 
+   *
    * @param {object[]} categories All available categories
    * @returns {Date[]} All available dates
    */
@@ -24,7 +24,7 @@ export class Slider {
 
   /**
    * Initializes the slider.
-   * 
+   *
    * @param {number} width The canvas width
    * @param {object[]} categories All available categories
    * @param {Function} onNewRangeSelected The function to call when the slider range is changed by the user
@@ -77,7 +77,7 @@ export class Slider {
 
   /**
    * Updates the displayed selected dates on the slider.
-   * 
+   *
    * @param {Date[]} value The 2 dates to display
    */
   updateValue (value) {

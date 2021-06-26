@@ -1,6 +1,6 @@
 /**
  * Updates the table according to the given category.
- * 
+ *
  * @param {object} category The category being processed
  */
 export function update (category) {
@@ -15,7 +15,7 @@ export function update (category) {
 
 /**
  * Shows the title of the table.
- * 
+ *
  * @param {object} category The category being processed
  */
 function showTitle (category) {
@@ -54,7 +54,7 @@ function clearTable () {
 
 /**
  * Draws the entire table.
- * 
+ *
  * @param {string[]} attributes All attributes to display in the table header.
  * @param {string[][]} rows All rows corresponding to the attributes.
  */

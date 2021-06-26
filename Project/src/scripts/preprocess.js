@@ -17,8 +17,8 @@ export class DataHandler {
   /**
    * Computes all possible values for a given attribute.
    * Ex: For `Language`, possible values may be: `French` and `English`.
-   * 
-   * @param {*} attributeName 
+   *
+   * @param {*} attributeName The name of the targeted attribute
    * @returns {object[]} All possible values for the given attribute name
    */
   getAll (attributeName) {

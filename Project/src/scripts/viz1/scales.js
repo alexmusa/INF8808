@@ -1,9 +1,10 @@
 
 /**
  * Initializes the X scales
- * 
+ *
  * @param {number} width The canvas width
  * @param {object[]} categories All categories to display
+ * @returns {*} The d3 Scale
  */
 export function setXScale (width, categories) {
   const accessor = category => category.numberOfContracts
@@ -14,9 +15,10 @@ export function setXScale (width, categories) {
 
 /**
  * Initializes the Y scales
- * 
+ *
  * @param {number} height The canvas height
  * @param {object[]} categories All categories to display
+ * @returns {*} The d3 Scale
  */
 export function setYScale (height, categories) {
   const accessor = category => category.totalFinancing
@@ -27,9 +29,10 @@ export function setYScale (height, categories) {
 
 /**
  * Computes the domain mapping provided by the given scale
- * 
+ *
  * @param {*} scale The d3 Scale to use
  * @param {*} domain The domain to map
+ * @returns {*} The domain mapping
  */
 export function setDomain (scale, domain) {
   return scale.domain(domain)
