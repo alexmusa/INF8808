@@ -91,7 +91,7 @@ h2 {
 }
 
 
-/* CHECKBOXES*/
+/* CHECKBOXES */
 #checkbox-cont-label{
     transform: translate(0px, 8px);
     font-weight: bold;
@@ -105,18 +105,33 @@ h2 {
 .checkbox {
     cursor: pointer;
     margin-left: 20px;
+    display: inline-block;
 }
 input[type=checkbox] {
     margin-left: 3px;
 }
+.dropdown-label {
+    font-size: 2em;
+    position: relative;
+    top: 13px;
+    margin-left: 2px;
+    margin-right: 2px;
+    columns: darkblue;
+}
+.dropdown-menu {
+    width: 300px;
+    max-height: 200px;
+    overflow-y: scroll;
+}
 
-/*CUSTOM SCROLL BAR*/
+
+/* CUSTOM SCROLL BAR */
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: #f1f1f1; }
 ::-webkit-scrollbar-thumb { background: #888; }
 ::-webkit-scrollbar-thumb:hover { background: #555; }
 
-/*TABLE*/
+/* TABLE (viz3)*/
 #table {
 
     max-width: 1200px;
@@ -161,6 +176,7 @@ td {
     text-align: center;
 }
 
+/* CICLES COLORS*/
 .currTimeCircle,.prevTimeCircle {
     fill: gray;
 }
@@ -250,6 +266,8 @@ circle:not([class*=selection]) {
     fill: indigo;
     background-color: indigo;
 }
+
+/* HISTORY LINES */
 .line {
     stroke-width: 5;
 }
@@ -283,6 +301,8 @@ circle:not([class*=selection]) {
 .line10 {
     stroke: indigo;
 }
+
+/* LEGENDS */
 .legend {
     height: 25px;
 }

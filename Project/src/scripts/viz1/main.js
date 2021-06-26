@@ -82,6 +82,8 @@ export default class Viz1 {
   update (categories) {
     if (!categories) categories = this.getCategories()
 
+    this.checkBoxesHandler.filterByAttributesSelection(categories)
+
     this.availSelectionIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     this.timedCategories = new Map()
 
