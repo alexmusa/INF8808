@@ -40,7 +40,8 @@ export default class Viz1 {
     this.update()
 
     this.dataHandler.register('selectedAttributes', this)
-    this.dataHandler.register('timeRange', this)
+    this.dataHandler.register('timeRange1', this)
+    this.dataHandler.register('timeRange2', this)
     this.dataHandler.register('financingRange', this)
     this.dataHandler.register('numberContractsRange', this)
   }
@@ -53,7 +54,17 @@ export default class Viz1 {
    */
   update () {
     const categories = this.dataHandler.getScatterPlot()
-    const values = Array.from(categories.values())
+
+    let values = []
+    if (categories[1] !== undefined) {
+      values = values.concat(
+        Array.from(categories[0].values()),
+        Array.from(categories[1].values())
+      )
+    } else {
+      values = Array.from(categories[0].values())
+    }
+
     this.xScale = scales.setXScale(this.graphSize.width, values)
     this.yScale = scales.setYScale(this.graphSize.height, values)
 

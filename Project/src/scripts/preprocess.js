@@ -9,7 +9,8 @@ export class DataHandler {
     // Set defaults
     this.state = {
       selectedAttributes: { value: ['Language'], callbacks: [] },
-      timeRange: { value: null, callbacks: [] },
+      timeRange1: { value: null, callbacks: [] },
+      timeRange2: { value: null, callbacks: [] },
       financingRange: { value: null, callbacks: [] },
       numberContractsRange: { value: null, callbacks: [] }
     }
@@ -24,8 +25,11 @@ export class DataHandler {
     console.log(this.data)
     console.log(this.univers)
 
-    this.state.timeRange.value = {
+    this.state.timeRange1.value = {
       start: this.getTimeScale()[0], end: this.getTimeScale()[this.getTimeScale().length - 1]
+    }
+    this.state.timeRange2.value = {
+      start: null, end: null
     }
     this.state.financingRange.value = { start: 0, end: Number.MAX_SAFE_INTEGER }
     this.state.numberContractsRange.value = { start: 0, end: Number.MAX_SAFE_INTEGER }
@@ -99,13 +103,19 @@ export class DataHandler {
    * SCATTER PLOT SECTION
    *
    */
-
-  _prefilter (data) {
+  _prefilter1 (data) {
     const isIncluded = (contract) => {
-      return compare({ period: contract.Period, quarter: contract.Quarter }, this.state.timeRange.value.start) >= 0 &&
-        compare({ period: contract.Period, quarter: contract.Quarter }, this.state.timeRange.value.end) <= 0
+      return compare({ period: contract.Period, quarter: contract.Quarter }, this.state.timeRange1.value.start) >= 0 &&
+        compare({ period: contract.Period, quarter: contract.Quarter }, this.state.timeRange1.value.end) <= 0
     }
+    return data.filter(isIncluded)
+  }
 
+  _prefilter2 (data) {
+    const isIncluded = (contract) => {
+      return compare({ period: contract.Period, quarter: contract.Quarter }, this.state.timeRange2.value.start) >= 0 &&
+        compare({ period: contract.Period, quarter: contract.Quarter }, this.state.timeRange2.value.end) <= 0
+    }
     return data.filter(isIncluded)
   }
 
@@ -127,11 +137,27 @@ export class DataHandler {
   }
 
   getScatterPlot () {
-    const data = this._prefilter(this.data)
-    const permutations = this.generateCategoryPermutationsData(data, this.state.selectedAttributes.value)
-    const categories = this._postfilter(permutations)
+    const plots = []
 
-    return categories
+    plots.push(
+      this._postfilter(
+        this.generateCategoryPermutationsData(
+          this._prefilter1(this.data),
+          this.state.selectedAttributes.value)
+      )
+    )
+
+    if (!(this.state.timeRange2.value.start === null || this.state.timeRange2.value.end === null)) {
+      plots.push(
+        this._postfilter(
+          this.generateCategoryPermutationsData(
+            this._prefilter2(this.data),
+            this.state.selectedAttributes.value)
+        )
+      )
+    }
+    
+    return plots
   }
 
   /*

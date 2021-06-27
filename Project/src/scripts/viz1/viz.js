@@ -104,17 +104,53 @@ export function positionLabels (g, width, height) {
  */
 export function updatePlot (categories, xScale, yScale, tip, onCircleClick) {
   const svg = d3.select('#scatter-plot-g')
+  svg.selectAll('circle.plot1').remove()
+  svg.selectAll('circle.plot2').remove()
+  svg.selectAll('line.line').remove()
 
-  categories = Array.from(categories.entries())
-  svg.selectAll('.plottedCircle')
-    .data(categories).join('circle')
-    .classed('plottedCircle', true)
+  const plot1 = Array.from(categories[0].entries())
+  svg.selectAll('.plot1')
+    .data(plot1).join('circle')
+    .classed('plot1', true)
     .attr('r', 7)
+    .style('fill', 'blue')
     .style('cursor', 'pointer')
     .on('mouseover', tip.show)
     .on('mouseout', tip.hide)
     .on('click', onCircleClick)
     .transition().duration(1000)
-    .attr('cx', category => xScale(category[1].numberOfContracts))
-    .attr('cy', category => yScale(category[1].totalFinancing))
+    .attr('cx', d => xScale(d[1].numberOfContracts))
+    .attr('cy', d => yScale(d[1].totalFinancing))
+
+  if (categories[1] !== undefined) {
+    const plot2 = Array.from(categories[1].entries())
+    svg.selectAll('.plot2')
+      .data(plot2).join('circle')
+      .classed('plot2', true)
+      .attr('r', 7)
+      .style('fill', 'red')
+      .style('cursor', 'pointer')
+      .on('mouseover', tip.show)
+      .on('mouseout', tip.hide)
+      .on('click', onCircleClick)
+      .transition().duration(1000)
+      .attr('cx', d => xScale(d[1].numberOfContracts))
+      .attr('cy', d => yScale(d[1].totalFinancing))
+
+    categories[0].forEach((value, key) => {
+      if (categories[1].get(key) !== undefined) {
+        console.log(value)
+        console.log(categories[1].get(key))
+        svg.append('line')
+          .classed('line', true)
+          .transition().duration(1000)
+          .attr('x1', xScale(value.numberOfContracts))
+          .attr('x2', xScale(categories[1].get(key).numberOfContracts))
+          .attr('y1', yScale(value.totalFinancing))
+          .attr('y2', yScale(categories[1].get(key).totalFinancing))
+      }
+    })
+
+    svg.selectAll('circle').raise()
+  }
 }

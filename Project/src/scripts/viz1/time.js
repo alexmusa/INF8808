@@ -39,18 +39,35 @@ export default class Time {
     updateRects(this.xScale, this.yScale)
   }
 
-  _set (timeRange) {
-    this.dataHandler.update('timeRange', timeRange)
+  _set1 (timeRange) {
+    this.dataHandler.update('timeRange1', timeRange)
   }
 
-  _get () {
-    return this.dataHandler.state.timeRange.value
+  _set2 (timeRange) {
+    this.dataHandler.update('timeRange2', timeRange)
+  }
+
+  _get1 () {
+    return this.dataHandler.state.timeRange1.value
+  }
+
+  _get2 () {
+    return this.dataHandler.state.timeRange2.value
   }
 
   update () {
-    const isIncluded = (newPeriod, newQuarter) => {
-      return compare({ period: newPeriod, quarter: newQuarter }, this._get().start) >= 0 &&
-        compare({ period: newPeriod, quarter: newQuarter }, this._get().end) <= 0
+    const isBlue = (newPeriod, newQuarter) => {
+      return compare({ period: newPeriod, quarter: newQuarter }, this._get1().start) >= 0 &&
+        compare({ period: newPeriod, quarter: newQuarter }, this._get1().end) <= 0
+    }
+
+    const isRed = (newPeriod, newQuarter) => {
+      if (this._get2().start === null || this._get2().end === null) {
+        return false
+      } else {
+        return compare({ period: newPeriod, quarter: newQuarter }, this._get2().start) >= 0 &&
+          compare({ period: newPeriod, quarter: newQuarter }, this._get2().end) <= 0
+      }
     }
 
     d3.select('#time-g')
@@ -58,8 +75,10 @@ export default class Time {
       .each(function (d, i) {
         const newQuarter = d
         const newPeriod = d3.select(this.parentNode).attr('value')
-        if (isIncluded(newPeriod, newQuarter)) {
-          d3.select(this).style('fill', 'black')
+        if (isBlue(newPeriod, newQuarter)) {
+          d3.select(this).style('fill', 'blue')
+        } else if (isRed(newPeriod, newQuarter)) {
+          d3.select(this).style('fill', 'red')
         } else {
           d3.select(this).style('fill', 'gray')
         }
@@ -73,24 +92,34 @@ function onClick (self, event) {
   const newQuarter = d3.select(event.target).attr('value')
   const newPeriod = d3.select(event.target.parentNode).attr('value')
 
-  const range = self._get()
+  const range1 = self._get1()
+  const range2 = self._get2()
 
   if (a === 0) {
     const newStart = { period: newPeriod, quarter: newQuarter }
-    if (compare(newStart, range.end) > 0) { range.start = range.end; range.end = newStart }
-    else { range.start = newStart }
-
+    range1.start = newStart; range1.end = newStart
+    self._set1(range1)
+    self._set2({ start: null, end: null })
   } else if (a === 1) {
     const newEnd = { period: newPeriod, quarter: newQuarter }
-    if (compare(newEnd, range.start) < 0) { range.end = range.start; range.start = newEnd }
-    else { range.end = newEnd }
+    if (compare(newEnd, range1.start) < 0) { range1.end = range1.start; range1.start = newEnd }
+    else { range1.end = newEnd }
+    self._set1(range1)
+  } else if (a === 2) {
+    const newStart = { period: newPeriod, quarter: newQuarter }
+    range2.start = newStart; range2.end = newStart
+    self._set2(range2)
+  } else if (a === 3) {
+    const newEnd = { period: newPeriod, quarter: newQuarter }
+    if (compare(newEnd, range2.start) < 0) { range2.end = range2.start; range2.start = newEnd }
+    else { range2.end = newEnd }
+    self._set2(range2)
   }
 
-  self._set(range)
   self.update()
 
   a++
-  a = a % 2
+  a = a % 4
 }
 
 /**
@@ -151,7 +180,6 @@ export function updateRects (xScale, yScale) {
   d3.select('#time-g')
     .selectAll('.period')
     .attr('transform', (d) => 'translate(' + xScale(d) + ', 0)')
-    .style('fill', 'black')
     .append('text')
     .attr('transform', 'rotate(-25)')
     .style('font-size', '12px')
@@ -162,5 +190,5 @@ export function updateRects (xScale, yScale) {
     .attr('y', (d) => yScale(d))
     .attr('width', xScale.bandwidth())
     .attr('height', yScale.bandwidth())
-    .style('fill', 'black')
+    .style('fill', 'blue')
 }
