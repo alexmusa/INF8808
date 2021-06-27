@@ -1,1 +1,1 @@
-# INF8808E project
+# Dev version of the INF8808E project
