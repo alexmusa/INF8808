@@ -37,7 +37,12 @@ export default class Viz1 {
     viz.appendGraphLabels(g)
     viz.positionLabels(g, this.graphSize.width, this.graphSize.height)
 
-    this.update(dataHandler.getScatterPlot())
+    this.update()
+
+    this.dataHandler.register('selectedAttributes', this)
+    this.dataHandler.register('timeRange', this)
+    this.dataHandler.register('financingRange', this)
+    this.dataHandler.register('numberContractsRange', this)
   }
 
   /**
@@ -46,7 +51,8 @@ export default class Viz1 {
    *
    * @param {Map} categories All categories to display
    */
-  update (categories) {
+  update () {
+    const categories = this.dataHandler.getScatterPlot()
     const values = Array.from(categories.values())
     this.xScale = scales.setXScale(this.graphSize.width, values)
     this.yScale = scales.setYScale(this.graphSize.height, values)

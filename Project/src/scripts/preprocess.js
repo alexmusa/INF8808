@@ -6,10 +6,12 @@ import cleanUpData from './cleanup'
 export class DataHandler {
   constructor (data) {
     // Set defaults
-    this.selectedAttributes = ['Genre', 'Type']
-    this.timeRange = null // TODO
-    this.financingRange = { start: 5000, end: 1000000 }
-    this.numberContractsRange = { start: 0, end: 1000 }
+    this.state = {
+      selectedAttributes: { value: ['Genre', 'Type'], callbacks: [] },
+      timeRange: { value: null, callbacks: [] },
+      financingRange: { value: { start: 5000, end: 1000000 }, callbacks: [] },
+      numberContractsRange: { value: { start: 0, end: 1000 }, callbacks: [] }
+    }
 
     this.data = cleanUpData(data)
 
@@ -20,6 +22,24 @@ export class DataHandler {
     })
     console.log(this.data)
     console.log(this.univers)
+  }
+
+  register (variable, callback) {
+    if (this.state[variable] === undefined) {
+      throw new Error()
+    }
+
+    this.state[variable].callbacks.push(callback)
+  }
+
+  update (variable, value) {
+    if (this.state[variable] === undefined) {
+      throw new Error()
+    }
+
+    this.state[variable].value = value
+    this.state[variable].callbacks.forEach(c => c.update())
+    console.log(this.state)
   }
 
   /**
@@ -84,12 +104,12 @@ export class DataHandler {
     const filtered = new Map()
     for (const c of categories.keys()) {
       const category = categories.get(c)
-      if (!(this.numberContractsRange.start < category.numberOfContracts &&
-            category.numberOfContracts < this.numberContractsRange.end)) {
+      if (!(this.state.numberContractsRange.value.start < category.numberOfContracts &&
+            category.numberOfContracts < this.state.numberContractsRange.value.end)) {
         continue
       }
-      if (!(this.financingRange.start < category.totalFinancing &&
-            category.totalFinancing < this.financingRange.end)) {
+      if (!(this.state.financingRange.value.start < category.totalFinancing &&
+            category.totalFinancing < this.state.financingRange.value.end)) {
         continue
       }
       filtered.set(c, categories.get(c))
@@ -99,8 +119,19 @@ export class DataHandler {
 
   getScatterPlot () {
     const data = this._prefilter(this.data)
-    const permutations = this.generateCategoryPermutationsData(data, this.selectedAttributes)
+    const permutations = this.generateCategoryPermutationsData(data, this.state.selectedAttributes.value)
     const categories = this._postfilter(permutations)
     return categories
+  }
+
+  /*
+   *
+   * CHECKBOX SECTION
+   *
+   */
+  getAttributes () {
+    const attributes = this.data.columns
+      .filter(att => !['Period', 'Title', 'Date', 'Final Value', 'Original Value', 'Comments'].includes(att))
+    return attributes
   }
 }

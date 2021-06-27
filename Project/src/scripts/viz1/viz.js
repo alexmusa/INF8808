@@ -51,9 +51,6 @@ export function appendGraphLabels (g) {
     .attr('font-size', 12)
 }
 
-
-
-
 /**
  * Draws both X and Y axis.
  *
@@ -78,7 +75,7 @@ export function drawAxis (xScale, yScale, height) {
 
 /**
  * Positions the axis labels.
- * 
+ *
  * @param {*} g A d3 Selection of the main svg group
  * @param {number} width The canvas width
  * @param {number} height The canvas height
