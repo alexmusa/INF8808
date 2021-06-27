@@ -6,14 +6,14 @@ import introJs from 'intro.js'
  * @returns {object} corresponding to the walkthrough object
  */
 export function init () {
-  var intro = introJs()
+  const intro = introJs()
 
   /* STEPS TEXT */
   const introText = 'Discover patterns in Telefilm Canada financing strategy ' +
     'by comparing and observing tendancies on the contracts and amounts allocated ' +
     'to different recipients regrouped by specific categories and observing tendancies ' +
     'through time.'
-  var title = d3.select('header > h2')
+  const title = d3.select('header > h2')
     .attr('data-intro', introText).attr('data-step', 1)
 
   const categoriesText = 'Select the attributes to consider for regrouping ' +
@@ -28,10 +28,10 @@ export function init () {
 
   const dropdownText = 'Open the dropdown menu to filter values to consider for a selected ' +
     'attribute.'
-  var dropdown = d3.select('.checkbox:nth-child(6) > .dropdown')
+  const dropdown = d3.select('.checkbox:nth-child(6) > .dropdown')
     .attr('data-intro', dropdownText).attr('data-step', 4)
 
-  var dropdownMenu = dropdown.select('.dropdown-menu')
+  const dropdownMenu = dropdown.select('.dropdown-menu')
 
   const dropdownMenuText = 'Select or unselect the values to consider.'
   dropdownMenu.attr('data-intro', dropdownMenuText).attr('data-step', 5)
@@ -52,13 +52,13 @@ export function init () {
   scatterPlot.select('.y.axis')
     .attr('data-intro', yAxisText).attr('data-step', 8)
 
-  const selectedCircleText = 'Single click on a dot to select it or unselect it if already' +
-    'selected, a maximum of 10 dots can be selected. Double click on a dot to open a list of ' +
+  const selectedCircleText = 'Single click on a dot to select it or unselect it if already ' +
+    'selected. A maximum of 10 dots can be selected. Double click on a dot to open a list of ' +
     'all contracts associated with the category.'
   scatterPlot.select('[class*=selection]')
     .attr('data-intro', selectedCircleText).attr('data-step', 9)
 
-  var legendText = 'Observe the selections and unselect some or all.'
+  let legendText = 'Observe the selections and unselect some or all.'
   d3.select('#sp-legend')
     .attr('data-intro', legendText).attr('data-step', 10)
 
@@ -69,11 +69,11 @@ export function init () {
 
   const seeEvolutionText = 'Click to switch the visualization to a line chart in order to ' +
     'analyze the evolution in time of the selected categories.'
-  var historyBtn = d3.select('#history-btn')
+  const historyBtn = d3.select('#history-btn')
     .attr('data-intro', seeEvolutionText).attr('data-step', 12)
 
   const returnToCategoriesText = 'Click to switch the visualization back to the scatter plot.'
-  var categoryBtn = d3.select('#categories-btn')
+  const categoryBtn = d3.select('#categories-btn')
     .attr('data-intro', returnToCategoriesText).attr('data-step', 13)
 
   const lineChartText = 'Observe the evolution in time of the selected categories.'
