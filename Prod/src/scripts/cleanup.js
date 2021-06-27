@@ -1,4 +1,9 @@
 /**
+ * Cleans up the raw data by:
+ * - removing contracts with missing information
+ * - parsing numbers and dates
+ * - fixing illegal characters
+ *
  * @param {object[]} data The initial (raw) data
  * @returns {object[]} The clean data
  */
@@ -45,8 +50,8 @@ export default function cleanUpData (data) {
 }
 
 /**
- * Finds all versions of the contract and labels the 'Amendment' attribute accordingly
- * Older versions are labeled as null and the most recent contract is labeled with a non empty string
+ * Finds all versions of the contract and labels the 'Amendment' attribute accordingly.
+ * Older versions are labeled as null and the most recent contract is labeled with a non empty string.
  *
  * @param {object[]} data The data being processed
  * @param {object} d A contract
@@ -76,6 +81,8 @@ function labelOlderContractsVersions (data, d) {
 }
 
 /**
+ * Finds all instances of the given contract.
+ *
  * @param {object[]} data The data being processed
  * @param {object} d A contract
  * @returns {number[]} Indexes of all contracts matching the contract
@@ -89,6 +96,8 @@ function findAllOtherInstancesIndexes (data, d) {
 }
 
 /**
+ * Sorts the contracts by date.
+ *
  * @param {object[]} data The data being processed
  * @param {number[]} indexes Contracts indexes
  * @returns {number[]} The sorted indexes
@@ -98,9 +107,11 @@ function sortInstancesByDate (data, indexes) {
 }
 
 /**
- * @returns {boolean} Whether the two instances are equivalent
+ * Checks whether two contracts can be considered equivalent.
+ *
  * @param {object} d A reference contract
  * @param {object} otherInstance Another contract that is a potential match
+ * @returns {boolean} Whether the two instances are equivalent
  */
 function contractIsAnotherInstance (d, otherInstance) {
   return otherInstance.Title === d.Title &&

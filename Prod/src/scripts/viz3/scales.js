@@ -1,4 +1,3 @@
-
 /**
  * Initializes the X scales
  *
@@ -7,9 +6,10 @@
  * @returns {*} The d3 Scale
  */
 export function setXScale (width, categories) {
-  const accessor = category => category.numberOfContracts
-  return d3.scaleLinear()
-    .domain([d3.min(categories, accessor), d3.max(categories, accessor)])
+  const minAccessor = category => category.contracts[0]?.date
+  const maxAccessor = category => category.contracts[category.contracts.length - 1]?.date
+  return d3.scaleTime()
+    .domain([d3.min(categories, minAccessor), d3.max(categories, maxAccessor)])
     .range([0, width])
 }
 
@@ -21,8 +21,9 @@ export function setXScale (width, categories) {
  * @returns {*} The d3 Scale
  */
 export function setYScale (height, categories) {
-  const accessor = category => category.totalFinancing
+  const minAccessor = category => category.contracts[0]?.totalFinancing
+  const maxAccessor = category => category.contracts[category.contracts.length - 1]?.totalFinancing
   return d3.scaleLinear()
-    .domain([d3.min(categories, accessor), d3.max(categories, accessor)])
+    .domain([d3.min(categories, minAccessor), d3.max(categories, maxAccessor)])
     .range([height, 0])
 }

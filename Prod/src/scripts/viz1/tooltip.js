@@ -1,10 +1,16 @@
 import * as helper from './helper'
 import d3Tip from 'd3-tip'
 
+/**
+ * Computes the content to display on the tooltip (while the user hovers a category).
+ *
+ * @param {*} category The category being hovered
+ * @returns {*} The tooltip content
+ */
 export function getContents (category) {
   const content = d3.create()
 
-  const categoryAttributes = JSON.parse(category[0])
+  const categoryAttributes = Object.entries(JSON.parse(category[0]))
   category = category[1]
 
   // Period
@@ -22,15 +28,19 @@ export function getContents (category) {
   }
 
   // Attributes
-  Object.entries(categoryAttributes).forEach(attr => {
-    const key = attr[0]; const value = attr[1]
+  if (categoryAttributes.length === 0) {
     content.append('div')
-      .append('b').text(key + ' : ')
-      .append('text')
-      .attr('class', 'tooltip-value')
-      .text(value)
-  })
-
+      .append('b').text('All contracts')
+  } else {
+    categoryAttributes.forEach(attr => {
+      const key = attr[0]; const value = attr[1]
+      content.append('div')
+        .append('b').text(key + ' : ')
+        .append('text')
+        .attr('class', 'tooltip-value')
+        .text(value)
+    })
+  }
   content.append('hr')
 
   // Number of contracts
@@ -50,6 +60,12 @@ export function getContents (category) {
   return content.html()
 }
 
+/**
+ * Initializes the tooltip.
+ *
+ * @param {*} margin The canvas margins
+ * @returns {object} The resulting svg group with the tooltip
+ */
 export function init (margin) {
   const g = helper.generateG(margin)
   const tip = d3Tip().attr('class', 'd3-tip').html(function (event, data) { return getContents(data) })

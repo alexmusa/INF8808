@@ -1,5 +1,10 @@
-import { schemeDark2 } from 'd3'
-
+/**
+ * Positions the axis labels.
+ *
+ * @param {*} g A d3 Selection of the main svg group
+ * @param {number} width The canvas width
+ * @param {number} height The canvas height
+ */
 export function positionLabels (g, width, height) {
   g.selectAll('.y.axis-text')
     .attr('x', -50)
@@ -10,14 +15,39 @@ export function positionLabels (g, width, height) {
     .attr('y', height + 50)
 }
 
-export function init (g, width, height, onMouseMove, onScroll) {
-  positionLabels(g, width, height)
-  d3.select('#scatter-plot').on('mousemove', onMouseMove)
-  d3.select(window).on('scroll', onScroll)
+/**
+ * Registers the events responsible for the transitions between the scatter plot (viz1) and the line chart (viz2)
+ *
+ * @param {*} viz1 The scatter plot
+ * @param {*} viz3 The line chart
+ */
+export function registerEvolutionButtons (viz1, viz3) {
+  const historyBtn = d3.select('#history-btn')
+  const catBtn = d3.select('#categories-btn')
+  historyBtn.on('click', () => {
+    historyBtn.attr('hidden', true)
+    catBtn.attr('hidden', null)
+    viz3.init([...viz1.timedCategories.entries()])
+  })
+
+  catBtn.on('click', () => {
+    catBtn.attr('hidden', true)
+    historyBtn.attr('hidden', null)
+  })
 }
 
+/**
+ * Updates the displayed categories on the scatter plot.
+ *
+ * @param {Map} categories The categories to display
+ * @param {Map} timedCategories The categories selected by the user (for the lines tracing)
+ * @param {*} xScale The d3 Scale to use on the X axis
+ * @param {*} yScale The d3 Scale to use on the Y axis
+ * @param {*} tip The d3 Tip to use when the user hovers a category
+ * @param {Function} onCircleClick The function to call when the user clicks on a category
+ */
 export function update (categories, timedCategories, xScale, yScale, tip, onCircleClick) {
-  var svg = d3.select('#graph-1-g')
+  const svg = d3.select('#graph-1-g')
 
   categories = Array.from(categories.entries())
   svg.selectAll('.currTimeCircle')
@@ -36,14 +66,14 @@ export function update (categories, timedCategories, xScale, yScale, tip, onCirc
     svg.selectAll('line').remove()
     svg.selectAll('.prevTimeCircle').remove()
     svg.selectAll('circle').attr('class', 'currTimeCircle')
-    d3.select('#legend').selectAll('div').remove()
+    d3.select('#sp-legend').selectAll('div').remove()
   }
 
   timedCategories = Array.from(timedCategories.entries())
   timedCategories.forEach(categories => {
     categories = categories[1].map(category => [categories[0], category])
-    var prevTimedCategories = categories.slice(1)
-    var currTimedCategory = categories[0]
+    const prevTimedCategories = categories.slice(1)
+    const currTimedCategory = categories[0]
 
     svg.selectAll('line.line' + currTimedCategory[1].selectionId)
       .data(prevTimedCategories).join(
@@ -96,8 +126,15 @@ export function update (categories, timedCategories, xScale, yScale, tip, onCirc
   svg.selectAll('circle').raise()
 }
 
+/**
+ * Updates the circle representing a category upon selecion.
+ *
+ * @param {*} event The event fired by the selection
+ * @param {*} selectionId The id of the category whose selection has changed
+ * @param {boolean} isSelected True if the category has been selected
+ */
 export function updateFromSelection (event, selectionId, isSelected) {
-  var circle = d3.select(event.target)
+  const circle = d3.select(event.target)
   if (isSelected) {
     circle.classed('selection' + selectionId, true)
   } else {
@@ -113,10 +150,9 @@ export function updateFromSelection (event, selectionId, isSelected) {
   }
 }
 
+/**
+ * Selects the first circle.
+ */
 export function selectFirst () {
   d3.select('#graph-1-g').select('circle').dispatch('click')
-}
-
-export function updateFromZoom (xScale, yScale) {
-  console.log(xScale, yScale)
 }

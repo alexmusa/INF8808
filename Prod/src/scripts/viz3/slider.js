@@ -1,8 +1,8 @@
 
 /**
- * This class is responsible for displaying the slider and handling all interactions with the scatter plot.
+ * This class is responsible for displaying the slider and handling all interactions with the line chart.
  */
-export class Slider {
+export default class Slider {
   constructor () {
     this.range = undefined
     this.ticksCount = 12
@@ -15,11 +15,8 @@ export class Slider {
    * @returns {Date[]} All available dates
    */
   getAllDates (categories) {
-    const dates = new Set()
-    categories.forEach(category => {
-      category.contracts.forEach(contract => dates.add(contract.Date))
-    })
-    return Array.from(dates).sort((date1, date2) => date1 - date2)
+    const data = categories.reduce((acc, curr) => acc.concat(curr.contracts), [])
+    return data.reduce((acc, curr) => acc.concat(curr.date), []).sort((a, b) => a - b)
   }
 
   /**
@@ -48,7 +45,7 @@ export class Slider {
       .tickFormat(d3.timeFormat('%Y'))
       .tickValues(tickValues)
       .default([this.range.startDate, this.range.endDate])
-      .fill('#2196f3')
+      .fill('red')
       .on('onchange', val => {
         this.updateValue(val)
       })
@@ -58,8 +55,10 @@ export class Slider {
         onNewRangeSelected(this.range)
       })
 
-    const gTime = d3.select('div#time-slider')
+    d3.select('.lc-slider').remove()
+    const gTime = d3.select('#lc-time-slider')
       .append('svg')
+      .attr('class', 'lc-slider')
       .attr('width', width + 25)
       .attr('height', 100)
       .append('g')
@@ -67,7 +66,7 @@ export class Slider {
 
     gTime.call(sliderTime)
 
-    d3.select('p#time-value').text(
+    d3.select('#lc-time-value').text(
       sliderTime.value()
         .map(v => new Date(v))
         .map(d3.timeFormat('%B %d %Y'))
@@ -81,7 +80,7 @@ export class Slider {
    * @param {Date[]} value The 2 dates to display
    */
   updateValue (value) {
-    d3.select('p#time-value').text(value.map(v => new Date(v))
+    d3.select('#lc-time-value').text(value.map(v => new Date(v))
       .map(d3.timeFormat('%Y %B %d'))
       .join(' - ')
     )

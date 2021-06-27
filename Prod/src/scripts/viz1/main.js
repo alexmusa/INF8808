@@ -4,10 +4,13 @@ import * as viz from './viz.js'
 import * as tooltip from './tooltip.js'
 import * as legend from './legend.js'
 import * as sliders from './sliders.js'
-import { color } from 'd3'
 
+/**
+ * This class represents the scatter plot.
+ * It is responsible for displaying the categories that correspond to the current user selecions.
+ */
 export default class Viz1 {
-  constructor (dataHandler, checkBoxesHandler, synchronizedViz) {
+  constructor (dataHandler, checkBoxesHandler, viz2, viz3) {
     // Initialize members
     this.dataHandler = dataHandler
     this.checkBoxesHandler = checkBoxesHandler
@@ -16,9 +19,14 @@ export default class Viz1 {
     this.margin = { top: 30, right: 210, bottom: 100, left: 270 }
     this.availSelectionIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     this.timedCategories = new Map()
-    this.synchronizedViz = synchronizedViz
-    this.selfViz = this
-    this.onCircleClick = (event, category) => this.onCategoryClick(event, category)
+    this.viz2 = viz2
+    this.viz3 = viz3
+    viz.registerEvolutionButtons(this, viz3)
+
+    this.clickHandler = new ClickHandler(
+      (event, category) => this.onCategoryClick(event, category),
+      (event, category) => this.viz2.update(category))
+    this.onCircleClick = (event, category) => this.clickHandler.onClick(event, category)
 
     this.setSizing()
 
@@ -28,10 +36,7 @@ export default class Viz1 {
     helper.appendAxes(g)
     helper.appendGraphLabels(g)
 
-    this.coordinates = [0, 0]
-    viz.init(g, this.graphSize.width, this.graphSize.height,
-      (event, viz) => this.onCoordinatesChange(event, this),
-      (event, coordinates) => this.onScrollDomain(event, this.coordinates))
+    viz.positionLabels(g, this.graphSize.width, this.graphSize.height)
 
     const categories = this.getCategories()
     this.slider.init(this.graphSize.width, categories, () => this.updateTimeRange())
@@ -40,6 +45,9 @@ export default class Viz1 {
     viz.selectFirst()
   }
 
+  /**
+   * Sets the dimensions of the plot.
+   */
   setSizing () {
     this.graphSize = {
       width: this.svgSize.width - this.margin.right - this.margin.left,
@@ -48,22 +56,27 @@ export default class Viz1 {
     helper.setCanvasSize(this.svgSize.width, this.svgSize.height)
   }
 
-  // This method is called whenever the user changes their selection
+  /**
+   * Udpates the scatter to fit a new time range.
+   * This method is called whenever the user changes their time range selection on the slider.
+   */
   updateTimeRange () {
-    var categories = this.getCategories()
+    const categories = this.getCategories()
+
+    this.checkBoxesHandler.filterByAttributesSelection(categories)
 
     this.timedCategories.forEach((timedCategories, categoryKey) => {
-      var lastTimedCategory = timedCategories[0]
+      const lastTimedCategory = timedCategories[0]
       timedCategories.unshift(lastTimedCategory)
 
-      var category = categories.get(categoryKey)
+      const category = categories.get(categoryKey)
       category.period = this.slider.range
       category.selectionId = lastTimedCategory.selectionId
       timedCategories[0] = category
     })
 
-    var timedCategories = Array.from(this.timedCategories.values())
-    var allCategories = Array.from(categories.values()).concat([].concat(...timedCategories))
+    const timedCategories = Array.from(this.timedCategories.values())
+    const allCategories = Array.from(categories.values()).concat([].concat(...timedCategories))
 
     this.xScale = scales.setXScale(this.graphSize.width, allCategories)
     this.yScale = scales.setYScale(this.graphSize.height, allCategories)
@@ -74,14 +87,21 @@ export default class Viz1 {
       this.xScale, this.yScale, this.tip, this.onCircleClick)
   }
 
-  // This method is called whenever the user changes his attributes selection
+  /**
+   * Updates the scatter plot.
+   * This method is called whenever the user changes his attributes selection.
+   *
+   * @param {Map} categories All categories to display
+   */
   update (categories) {
     if (!categories) categories = this.getCategories()
+
+    this.checkBoxesHandler.filterByAttributesSelection(categories)
 
     this.availSelectionIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     this.timedCategories = new Map()
 
-    var catValues = Array.from(categories.values())
+    const catValues = Array.from(categories.values())
     this.xScale = scales.setXScale(this.graphSize.width, catValues)
     this.yScale = scales.setYScale(this.graphSize.height, catValues)
 
@@ -89,15 +109,26 @@ export default class Viz1 {
 
     viz.update(categories, this.timedCategories,
       this.xScale, this.yScale, this.tip, this.onCircleClick)
+
+    this.viz3.onCategorySelection(this.timedCategories.size > 0)
   }
 
+  /**
+   * Computes the categories that correspond to the current user selections.
+   *
+   * @returns {Map} The corresponding categories
+   */
   getCategories () {
     return this.dataHandler.getCategoryData(this.slider.range, this.checkBoxesHandler.selectedBoxes)
   }
 
+  /**
+   * Registers a category when the user clicks the corresponding circle and updates history button accordingly.
+   *
+   * @param {*} event The event fired by the selecion
+   * @param {*} category The category whose circle was clicked
+   */
   onCategoryClick (event, category) {
-    //this.synchronizedViz.update(category)
-
     const categoryKey = category[0]
     category = category[1]
     const categorySelId = category.selectionId
@@ -116,16 +147,44 @@ export default class Viz1 {
       viz.updateFromSelection(event, category.selectionId, true)
       legend.updateFromSelection(category.selectionId, true)
     }
+    this.viz3.onCategorySelection(this.timedCategories.size > 0)
+  }
+}
+
+/**
+ * This class is responsible for detecting whether the user is performing
+ * a single click or a double click on a category circle.
+ */
+class ClickHandler {
+  constructor (doClickAction, doDoubleClickAction) {
+    this.timer = 0
+    this.delay = 200
+    this.prevent = false
+
+    this.doClickAction = doClickAction
+    this.doDoubleClickAction = doDoubleClickAction
   }
 
-  onCoordinatesChange (event, viz) {
-    viz.coordinates = d3.pointer(event, event.target)
-  }
-
-  onScrollDomain (event, coordinates) {
-    this.xScale = scales.setDomain(this.xScale, coordinates)
-    this.yScale = scales.setDomain(this.yScale, coordinates)
-
-    viz.updateFromZoom(this.xScale, this.yScale)
+  /**
+   * Executes the click action handler that corresponds to the detected click type.
+   *
+   * @param {*} event The event fired by the click
+   * @param {*} ob A parameter to pass to the click actions handlers
+   */
+  onClick (event, ob) {
+    if (event.detail === null) {
+      this.doClickAction(event, ob)
+    } else if (event.detail === 1) {
+      this.timer = setTimeout(() => {
+        if (!this.prevent) {
+          this.doClickAction(event, ob)
+        }
+        this.prevent = false
+      }, this.delay)
+    } else if (event.detail === 2) {
+      clearTimeout(this.timer)
+      this.prevent = true
+      this.doDoubleClickAction(event, ob)
+    }
   }
 }

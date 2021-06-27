@@ -1,14 +1,14 @@
 /**
- * Generates the group that contains the plot.
+ * Generates the group that contains the chart.
  *
  * @param {object} margin The line chart margin
  * @returns {*} The generated svg group
  */
 export function generateG (margin) {
-  return d3.select('.graph-1')
+  return d3.select('.graph-3')
     .select('svg')
     .append('g')
-    .attr('id', 'graph-1-g')
+    .attr('id', 'graph-3-g')
     .attr('transform',
       'translate(' + margin.left + ',' + margin.top + ')')
 }
@@ -20,7 +20,7 @@ export function generateG (margin) {
  * @param {number} height The canvas height
  */
 export function setCanvasSize (width, height) {
-  d3.select('#scatter-plot')
+  d3.select('#line-chart')
     .attr('width', width)
     .attr('height', height)
 }
@@ -28,7 +28,7 @@ export function setCanvasSize (width, height) {
 /**
  * Adds the axes.
  *
- * @param {*} g The svg group that contains the plot
+ * @param {*} g The svg group that contains the chart
  */
 export function appendAxes (g) {
   g.append('g')
@@ -44,13 +44,13 @@ export function appendAxes (g) {
  */
 export function appendGraphLabels (g) {
   g.append('text')
-    .text('Financing')
+    .text('Total financing')
     .attr('class', 'y axis-text')
     .attr('transform', 'rotate(-90)')
     .attr('font-size', 12)
 
   g.append('text')
-    .text('Number of contracts')
+    .text('Time')
     .attr('class', 'x axis-text')
     .attr('font-size', 12)
 }
@@ -58,16 +58,17 @@ export function appendGraphLabels (g) {
 /**
  * Draws both X and Y axis.
  *
+ * @param {*} g The svg group that contains the chart
  * @param {*} xScale The d3 Scales to use on the X axis
  * @param {*} yScale The d3 Scales to use on the Y axis
  * @param {number} height The canvas height
  */
-export function drawAxis (xScale, yScale, height) {
-  d3.select('.x.axis')
+export function drawAxis (g, xScale, yScale, height) {
+  g.select('.x.axis')
     .transition().duration(1000)
     .attr('transform', 'translate( 0, ' + height + ')')
-    .call(d3.axisBottom(xScale).tickSizeOuter(0).tickArguments([5, '.0r']))
-  d3.select('.y.axis')
+    .call(d3.axisBottom(xScale).tickSizeOuter(0).tickArguments(12))
+  g.select('.y.axis')
     .transition().duration(2000)
     .call(d3.axisLeft(yScale).tickSizeOuter(0).tickArguments([5, '.0s']))
 }

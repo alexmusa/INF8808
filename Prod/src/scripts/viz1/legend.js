@@ -1,5 +1,12 @@
+
+/**
+ * Updates the interface when the user selects/de-selects a new category.
+ *
+ * @param {*} selectionId The id of the category whose selection has changed
+ * @param {boolean} isSelected True if the category has been selected
+ */
 export function updateFromSelection (selectionId, isSelected) {
-  var legend = d3.select('#legend')
+  const legend = d3.select('#sp-legend')
 
   if (isSelected) {
     legend.append('div')
@@ -10,7 +17,7 @@ export function updateFromSelection (selectionId, isSelected) {
     if (selectionsCount === 1) {
       legend.append('div')
         .attr('class', 'title')
-        .text('Selections').lower()
+        .text('Selections:').lower()
     } else if (selectionsCount === 2) {
       legend.append('div')
         .attr('class', 'reset')
@@ -31,8 +38,13 @@ export function updateFromSelection (selectionId, isSelected) {
   }
 }
 
+/**
+ * Cancels all categories selections whenever the user clicks the reset button.
+ *
+ * @param {*} event The event fired by the reset
+ */
 export function onResetSelection (event) {
-  var legend = d3.select('#legend')
+  const legend = d3.select('#sp-legend')
 
   legend.selectAll('[class*=selection]').remove()
   legend.selectAll('.reset').remove()
@@ -42,6 +54,11 @@ export function onResetSelection (event) {
     .filter('[class*=selection]').dispatch('click')
 }
 
+/**
+ * Adds a category to the selections whenever the user selects a category
+ *
+ * @param {*} event The event fired by the click
+ */
 export function onClickSelection (event) {
   d3.select('#graph-1-g')
     .selectAll('.currTimeCircle')
