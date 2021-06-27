@@ -7,10 +7,10 @@ export class DataHandler {
   constructor (data) {
     // Set defaults
     this.state = {
-      selectedAttributes: { value: ['Genre', 'Type'], callbacks: [] },
+      selectedAttributes: { value: ['Language'], callbacks: [] },
       timeRange: { value: null, callbacks: [] },
-      financingRange: { value: { start: 5000, end: 1000000 }, callbacks: [] },
-      numberContractsRange: { value: { start: 0, end: 1000 }, callbacks: [] }
+      financingRange: { value: null, callbacks: [] },
+      numberContractsRange: { value: null, callbacks: [] }
     }
 
     this.data = cleanUpData(data)
@@ -22,6 +22,12 @@ export class DataHandler {
     })
     console.log(this.data)
     console.log(this.univers)
+
+    this.state.timeRange.value = {
+      start: this.getTimeScale()[0], end: this.getTimeScale()[this.getTimeScale().length - 1]
+    }
+    this.state.financingRange.value = { start: 0, end: Number.MAX_SAFE_INTEGER }
+    this.state.numberContractsRange.value = { start: 0, end: Number.MAX_SAFE_INTEGER }
   }
 
   register (variable, callback) {
@@ -94,22 +100,39 @@ export class DataHandler {
    */
 
   _prefilter (data) {
-    return data.filter(contract => {
-      // return !timeRange || (contract.Date >= timeRange.startDate && contract.Date <= timeRange.endDate)
-      return true
-    })
+    const isIncluded = (contract) => {
+      if (contract.Period > this.state.timeRange.value.start.period &&
+        contract.Period < this.state.timeRange.value.end.period) {
+        return true
+      }
+
+      if (contract.Period === this.state.timeRange.value.start.period) {
+        if (contract.Quarter >= this.state.timeRange.value.start.quarter) {
+          return true
+        }
+      }
+
+      if (contract.Period === this.state.timeRange.value.end.period) {
+        if (contract.Quarter <= this.state.timeRange.value.end.quarter) {
+          return true
+        }
+      }
+      return false
+    }
+
+    return data.filter(isIncluded)
   }
 
   _postfilter (categories) {
     const filtered = new Map()
     for (const c of categories.keys()) {
       const category = categories.get(c)
-      if (!(this.state.numberContractsRange.value.start < category.numberOfContracts &&
-            category.numberOfContracts < this.state.numberContractsRange.value.end)) {
+      if (!(this.state.numberContractsRange.value.start <= category.numberOfContracts &&
+            category.numberOfContracts <= this.state.numberContractsRange.value.end)) {
         continue
       }
-      if (!(this.state.financingRange.value.start < category.totalFinancing &&
-            category.totalFinancing < this.state.financingRange.value.end)) {
+      if (!(this.state.financingRange.value.start <= category.totalFinancing &&
+            category.totalFinancing <= this.state.financingRange.value.end)) {
         continue
       }
       filtered.set(c, categories.get(c))
@@ -121,6 +144,7 @@ export class DataHandler {
     const data = this._prefilter(this.data)
     const permutations = this.generateCategoryPermutationsData(data, this.state.selectedAttributes.value)
     const categories = this._postfilter(permutations)
+
     return categories
   }
 
@@ -133,5 +157,32 @@ export class DataHandler {
     const attributes = this.data.columns
       .filter(att => !['Period', 'Title', 'Date', 'Final Value', 'Original Value', 'Comments'].includes(att))
     return attributes
+  }
+
+  /*
+   *
+   * TIME SELECTION TOOL
+   *
+   */
+  getTimeScale () {
+    if (this._cached_timescale === undefined) {
+      const quarters = this.univers.get('Quarter')
+      const periods = this.univers.get('Period')
+
+      const permutations = []
+      let i = 0
+      periods.forEach(p => {
+        quarters.forEach(q => {
+          permutations.push({
+            id: i,
+            period: p,
+            quarter: q
+          })
+          i++
+        })
+      })
+      this._cached_timescale = permutations
+    }
+    return this._cached_timescale
   }
 }

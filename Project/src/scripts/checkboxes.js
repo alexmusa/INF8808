@@ -1,5 +1,3 @@
-import { select } from "d3"
-
 /**
  * This class handles all the checkboxes.
  * It is responsible for:

@@ -12,7 +12,7 @@ export default class Viz1 {
    * Sets the dimensions of the plot.
    */
   computeSizing () {
-    this.margin = { top: 30, right: 10, bottom: 100, left: 70 }
+    this.margin = { top: 30, right: 10, bottom: 70, left: 70 }
     this.dimension = {
       width: document.getElementById('scatter-plot').offsetWidth,
       height: 9 * document.getElementById('scatter-plot').offsetWidth / 16

@@ -1,4 +1,5 @@
 /**
+ *
  * FUNCTIONS TO BUILD THE VIZUALISATION
  *
  */
@@ -9,7 +10,7 @@
  * @param {object} margin The line chart margin
  * @returns {*} The generated svg group
  */
- export function generateG (margin, width, height) {
+export function generateG (margin, width, height) {
   return d3.select('div#scatter-plot')
     .append('svg')
     .attr('id', 'scatter-plot-canvas')
@@ -69,6 +70,7 @@ export function drawAxis (xScale, yScale, height) {
 }
 
 /**
+ *
  * FUNCTIONS MODIFYING THE VIZUALISATION
  *
  */
