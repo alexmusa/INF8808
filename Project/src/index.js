@@ -8,7 +8,7 @@ import * as walkthrough from './scripts/walkthrough'
 import Viz3 from './scripts/viz3/main'
 
 /**
- * @file This file is the entry-point for the the code for the final project for the course INF8808.
+ * @file This file is the entry-point for the code for the final project for the course INF8808.
  * @author Alexandre Musaraganyi, Gabriel St-Denis, Ismael Gbian
  */
 
