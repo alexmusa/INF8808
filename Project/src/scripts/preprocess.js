@@ -1,4 +1,5 @@
 import cleanUpData from './cleanup'
+import { compare } from './helper'
 
 /**
  * This class is responsible for parsing the dataset, and holding all the contracts during a session.
@@ -101,23 +102,8 @@ export class DataHandler {
 
   _prefilter (data) {
     const isIncluded = (contract) => {
-      if (contract.Period > this.state.timeRange.value.start.period &&
-        contract.Period < this.state.timeRange.value.end.period) {
-        return true
-      }
-
-      if (contract.Period === this.state.timeRange.value.start.period) {
-        if (contract.Quarter >= this.state.timeRange.value.start.quarter) {
-          return true
-        }
-      }
-
-      if (contract.Period === this.state.timeRange.value.end.period) {
-        if (contract.Quarter <= this.state.timeRange.value.end.quarter) {
-          return true
-        }
-      }
-      return false
+      return compare({ period: contract.Period, quarter: contract.Quarter }, this.state.timeRange.value.start) >= 0 &&
+        compare({ period: contract.Period, quarter: contract.Quarter }, this.state.timeRange.value.end) <= 0
     }
 
     return data.filter(isIncluded)
